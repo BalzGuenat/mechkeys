@@ -2853,7 +2853,6 @@ Wire Wire Line
 Connection ~ 13000 4900
 Connection ~ 12200 4600
 Connection ~ 13200 4600
-Connection ~ 19200 4600
 Connection ~ 14200 4600
 Wire Wire Line
 	3950 1150 3950 5600
@@ -3072,8 +3071,6 @@ Wire Wire Line
 	17325 3600 17325 4225
 Wire Wire Line
 	17325 4225 19200 4225
-Wire Wire Line
-	19200 4225 19200 4575
 Wire Wire Line
 	21000 2900 21000 5600
 Wire Wire Line
@@ -3753,7 +3750,7 @@ F 3 "" H 20700 10050 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	20350 10200 20700 10200
+	20350 10200 21250 10200
 Wire Wire Line
 	20500 10200 20500 10350
 Connection ~ 20500 10200
@@ -3773,7 +3770,7 @@ F 3 "" H 21250 9600 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	21250 9800 21250 9750
+	21250 10200 21250 9750
 $Comp
 L AN32183A U2
 U 1 1 5744B21C
@@ -3790,11 +3787,7 @@ Wire Wire Line
 Wire Wire Line
 	21250 9400 21250 9450
 Wire Wire Line
-	20650 9800 21250 9800
-Wire Wire Line
 	20700 9800 20700 9900
-Connection ~ 20700 9800
-Connection ~ 20750 9800
 Connection ~ 15800 7700
 Connection ~ 20500 7700
 $Comp
@@ -3866,4 +3859,10 @@ F 3 "" H 16755 8250 50  0000 C CNN
 	1    16800 8300
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	19200 4225 19200 4600
+Connection ~ 20700 10200
+Wire Wire Line
+	20650 9800 20750 9800
+Connection ~ 20700 9800
 $EndSCHEMATC
