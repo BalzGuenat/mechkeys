@@ -1,7 +1,7 @@
 (kicad_pcb (version 4) (host pcbnew 4.0.2-stable)
 
   (general
-    (links 507)
+    (links 509)
     (no_connects 0)
     (area 16.003001 13.66 401.377219 120.302)
     (thickness 1.6)
@@ -67,8 +67,8 @@
     (aux_axis_origin 0 0)
     (visible_elements FFFCC76D)
     (pcbplotparams
-      (layerselection 0x00030_80000001)
-      (usegerberextensions false)
+      (layerselection 0x010f0_80000001)
+      (usegerberextensions true)
       (excludeedgelayer true)
       (linewidth 0.150000)
       (plotframeref false)
@@ -88,7 +88,7 @@
       (subtractmaskfromsilk false)
       (outputformat 1)
       (mirror false)
-      (drillshape 1)
+      (drillshape 0)
       (scaleselection 1)
       (outputdirectory ""))
   )
