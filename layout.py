@@ -19,7 +19,7 @@ mx_part = "MXALPS"
 diode_lib = "/Library/Application Support/kicad/modules/Diodes_ThroughHole.pretty"
 diode_part = "Diode_DO-35_SOD27_Horizontal_RM10"
 layout_file_name = "103key-layout.json"
-project_name = "103key"
+project_name = "103key10x11"
 output_directory = project_name + "-project/"
 
 spacing = 19.05 * 10**6  # 19mm
