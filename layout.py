@@ -24,7 +24,7 @@ from pprint import pprint
 # mxalps-reversed   - mx merged with alps rotated 180 no LEDs or holes
 # mxalps-no-led     - mx merged with alps, but no LEDs or holes
 #
-footprint_name = "mx"
+footprint_name = "mxalps-no-led"
 
 # If 0 the LED slot will be at the top, if you're not using LEDs
 # rotating 180 will orient the switch in the standard cherry way
@@ -68,9 +68,13 @@ y_origin = 1.5
 #     diode_rotate = 0
 #     diode_x_offset = -7.62
 #     diode_y_offset = -8.1
-diode_rotate = 270
-diode_x_offset = -9
-diode_y_offset = -5
+diode_rotate = 180
+diode_x_offset = 3 * 2.54
+diode_y_offset = 8.1
+
+diode_label_rotate = 0
+diode_label_x_offset = 3 * 2.54
+diode_label_y_offset = -1.6
 
 # Schematic
 #   Switches
@@ -518,10 +522,10 @@ diode_template = """(module Diode_DO-35_SOD27_Horizontal_RM10 locked (layer F.Cu
     (at {x_pos} {y_pos} {rotate})
     (descr "Diode, DO-35,  SOD27, Horizontal, RM 10mm")
     (tags "Diode, DO-35, SOD27, Horizontal, RM 10mm, 1N4148,")
-    (fp_text reference {reference} (at 5.43052 1.53746 270) (layer F.SilkS)
+    (fp_text reference {reference} (at {label_x_pos} {label_y_pos} {label_rotate}) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value {reference} (at 5.43052 1.53746 270) (layer F.Fab) hide
+    (fp_text value {reference} (at {label_x_pos} {label_y_pos} {label_rotate}) (layer F.Fab) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_line (start 7.36652 -0.00254) (end 8.76352 -0.00254) (layer F.SilkS) (width 0.15))
@@ -629,6 +633,9 @@ def place_text_footprint(pcb_text, x, y, reference=None, i=None, timestamp=None)
         x_pos=x * pcb_spacing + diode_x_offset,
         y_pos=y * pcb_spacing + diode_y_offset,
         rotate=diode_rotate,
+        label_x_pos=diode_label_x_offset,
+        label_y_pos=diode_label_y_offset,
+        label_rotate=diode_label_rotate,
         tstamp=unicode(time() if timestamp is None else timestamp),
         tedit=unicode(time() if timestamp is None else timestamp)
     ))
