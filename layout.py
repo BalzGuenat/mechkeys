@@ -8,42 +8,542 @@ Use that file to create a kicad schematic and pcb with the switches.
 import six
 import json
 import codecs
+import os
 from time import time
 from pprint import pprint
 
-import pcbnew
-kicad = pcbnew.IO_MGR.PluginFind(pcbnew.IO_MGR.KICAD)
+#
+# footprint_name is used to look up the pcb template below
+#
+# The following are currently defined:
+#
+# mx                - MX, no mounting holes, no LEDs
+# mx_pcb            - MX, includes mounting holes, but no LEDs
+# mx_led            - MX, includes LEDs and mounting holes
+# mxalps            - mx merged with alps using slots (w/LEDs + holes)
+# mxalps-reversed   - mx merged with alps rotated 180 no LEDs or holes
+# mxalps-no-led     - mx merged with alps, but no LEDs or holes
+#
+footprint_name = "mx"
 
-mx_lib = "/Library/Application Support/kicad/modules/Keyboard.pretty"
-mx_part = "MXALPS"
-diode_lib = "/Library/Application Support/kicad/modules/Diodes_ThroughHole.pretty"
-diode_part = "Diode_DO-35_SOD27_Horizontal_RM10"
-layout_file_name = "103key-layout.json"
-project_name = "103key10x11"
+# If 0 the LED slot will be at the top, if you're not using LEDs
+# rotating 180 will orient the switch in the standard cherry way
+# which is apparently more compatible with some key caps.
+switch_rotate = 180
+
+# Path to the json file downloaded from http://www.keyboard-layout-editor.com/
+layout_file_name = "MetalDetector/MD-layout.json"
+
+# name that will be prepended to all output
+project_name = "text-test"
+
+# output directory
 output_directory = project_name + "-project/"
 
-spacing = 19.05 * 10**6  # 19mm
+# project file
+project_file_name = output_directory + project_name + ".pro"
+
+# schematic file
+schematic_file_name = output_directory + project_name + ".sch"
+
+# pcb file
+pcb_file_name = output_directory + project_name + ".kicad_pcb"
+
+# PCB - Basics
+pcb_spacing = 19.05  # 19.05mm aka .75"
 x_origin = 2.0
 y_origin = 1.5
 
+# PCB - Diode placement relative to the switch
+#
+# WARNING: You almost certainly need to move some diodes manually. In
+# particular check for overlap with stabilizers.
+#
+# Examples:
+#   Left side:
+#     diode_rotate = 270
+#     diode_x_offset = -9
+#     diode_y_offset = -5
+#   Top:
+#     diode_rotate = 0
+#     diode_x_offset = -7.62
+#     diode_y_offset = -8.1
+diode_rotate = 270
+diode_x_offset = -9
+diode_y_offset = -5
+
+# Schematic
+#   Switches
 sw_spacing = 1000
 sw_x_origin = 100
 sw_y_origin = 100
-
+#   LEDs
 led_spacing = 1000
 led_x_origin = 100
 led_y_origin = 6000
 
-diode_x_offset = -9 * 10**6
-diode_y_offset = -5 * 10**6
+
+#
+# End of config variables
+#
+
+pcb_header = """(kicad_pcb (version 4) (host pcbnew 4.0.2-stable)
+
+  (general
+    (links 539)
+    (no_connects 522)
+    (area 0 0 0 0)
+    (thickness 1.6)
+    (drawings 0)
+    (tracks 47)
+    (zones 0)
+    (modules 202)
+    (nets 134)
+  )
+
+  (page A2)
+  (layers
+    (0 F.Cu signal)
+    (31 B.Cu signal)
+    (32 B.Adhes user)
+    (33 F.Adhes user)
+    (34 B.Paste user)
+    (35 F.Paste user)
+    (36 B.SilkS user)
+    (37 F.SilkS user)
+    (38 B.Mask user)
+    (39 F.Mask user)
+    (40 Dwgs.User user)
+    (41 Cmts.User user)
+    (42 Eco1.User user)
+    (43 Eco2.User user)
+    (44 Edge.Cuts user)
+    (45 Margin user)
+    (46 B.CrtYd user)
+    (47 F.CrtYd user)
+    (48 B.Fab user)
+    (49 F.Fab user)
+  )
+
+  (setup
+    (last_trace_width 0.254)
+    (user_trace_width 0.254)
+    (user_trace_width 0.3048)
+    (user_trace_width 0.381)
+    (trace_clearance 0.2032)
+    (zone_clearance 0.508)
+    (zone_45_only no)
+    (trace_min 0.2032)
+    (segment_width 0.2)
+    (edge_width 0.15)
+    (via_size 0.6096)
+    (via_drill 0.3048)
+    (via_min_size 0.6096)
+    (via_min_drill 0.3048)
+    (uvia_size 0.4572)
+    (uvia_drill 0.3048)
+    (uvias_allowed no)
+    (uvia_min_size 0.4572)
+    (uvia_min_drill 0.3048)
+    (pcb_text_width 0.3)
+    (pcb_text_size 1.5 1.5)
+    (mod_edge_width 0.15)
+    (mod_text_size 1 1)
+    (mod_text_width 0.15)
+    (pad_size 1.524 1.524)
+    (pad_drill 0.762)
+    (pad_to_mask_clearance 0.2)
+    (aux_axis_origin 0 0)
+    (visible_elements FFFFF77F)
+    (pcbplotparams
+      (layerselection 0x00030_80000001)
+      (usegerberextensions false)
+      (excludeedgelayer true)
+      (linewidth 0.150000)
+      (plotframeref false)
+      (viasonmask false)
+      (mode 1)
+      (useauxorigin false)
+      (hpglpennumber 1)
+      (hpglpenspeed 20)
+      (hpglpendiameter 15)
+      (hpglpenoverlay 2)
+      (psnegative false)
+      (psa4output false)
+      (plotreference true)
+      (plotvalue true)
+      (plotinvisibletext false)
+      (padsonsilk false)
+      (subtractmaskfromsilk false)
+      (outputformat 1)
+      (mirror false)
+      (drillshape 1)
+      (scaleselection 1)
+      (outputdirectory ""))
+  )
+
+  (net_class Default "This is the default net class."
+    (clearance 0.2032)
+    (trace_width 0.381)
+    (via_dia 0.6096)
+    (via_drill 0.3048)
+    (uvia_dia 0.4572)
+    (uvia_drill 0.3048)
+  )
+
+  (net_class 10m ""
+    (clearance 0.2032)
+    (trace_width 0.254)
+    (via_dia 0.6096)
+    (via_drill 0.3048)
+    (uvia_dia 0.4572)
+    (uvia_drill 0.3048)
+  )
+
+  (net_class 20m ""
+    (clearance 0.254)
+    (trace_width 0.508)
+    (via_dia 0.6096)
+    (via_drill 0.3048)
+    (uvia_dia 0.4572)
+    (uvia_drill 0.3048)
+  )"""
+
+pcb_footer = """)
+"""
+
+#
+# mx                - Standard, includes mounting holes, but no LEDs
+# mx_led            - Standard, includes LEDs and mounting holes
+# mxalps            - mx merged with alps using slots (w/LEDs + holes)
+# mxalps-reversed   - mx merged with alps rotated 180 no LEDs or holes
+# mxalps-no-led     - mx merged with alps, but no LEDs or holes
+#
+footprints = {
+    #
+    # Standard, includes mounting holes, but no LEDs
+    #
+    "mx": """(module MX locked (layer F.Cu) (tedit {tedit}) (tstamp {tstamp})
+    (at {x_pos} {y_pos} {rotate})
+    (descr MX)
+    (tags MX)
+    (fp_text reference {reference} (at 0 3) (layer B.SilkS)
+      (effects (font (size 1 1) (thickness 0.2)) (justify mirror))
+    )
+    (fp_text value {reference} (at 0 8.2) (layer F.SilkS) hide
+      (effects (font (thickness 0.3048)))
+    )
+    (fp_line (start -6.35 -6.35) (end 6.35 -6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start 6.35 -6.35) (end 6.35 6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start 6.35 6.35) (end -6.35 6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start -6.35 6.35) (end -6.35 -6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start -9.398 -9.398) (end 9.398 -9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start 9.398 -9.398) (end 9.398 9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start 9.398 9.398) (end -9.398 9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start -9.398 9.398) (end -9.398 -9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start -6.35 -6.35) (end -4.572 -6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start 4.572 -6.35) (end 6.35 -6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start 6.35 -6.35) (end 6.35 -4.572) (layer F.SilkS) (width 0.381))
+    (fp_line (start 6.35 4.572) (end 6.35 6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start 6.35 6.35) (end 4.572 6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start -4.572 6.35) (end -6.35 6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start -6.35 6.35) (end -6.35 4.572) (layer F.SilkS) (width 0.381))
+    (fp_line (start -6.35 -4.572) (end -6.35 -6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start -6.985 -6.985) (end 6.985 -6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 6.985 -6.985) (end 6.985 6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 6.985 6.985) (end -6.985 6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start -6.985 6.985) (end -6.985 -6.985) (layer Eco2.User) (width 0.1524))
+    (pad SW2 thru_hole circle (at 2.54 -5.08) (size 2.5 2.5) (drill 1.4986) (layers *.Cu *.SilkS *.Mask))
+    (pad SW1 thru_hole circle (at -3.81 -2.54) (size 2.5 2.5) (drill 1.4986) (layers *.Cu *.SilkS *.Mask))
+    (pad "" np_thru_hole circle (at 0 0) (size 3.9878 3.9878) (drill 3.9878) (layers *.Cu))
+  )""",
+    "mx_pcb": """(module MX_PCB locked (layer F.Cu) (tedit {tedit}) (tstamp {tstamp})
+    (at {x_pos} {y_pos} {rotate})
+    (descr MX_PCB)
+    (tags MX_PCB)
+    (fp_text reference {reference} (at 0 3) (layer B.SilkS)
+      (effects (font (size 1 1) (thickness 0.2)) (justify mirror))
+    )
+    (fp_text value {reference} (at 0 8.2) (layer F.SilkS) hide
+      (effects (font (thickness 0.3048)))
+    )
+    (fp_line (start -6.35 -6.35) (end 6.35 -6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start 6.35 -6.35) (end 6.35 6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start 6.35 6.35) (end -6.35 6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start -6.35 6.35) (end -6.35 -6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start -9.398 -9.398) (end 9.398 -9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start 9.398 -9.398) (end 9.398 9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start 9.398 9.398) (end -9.398 9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start -9.398 9.398) (end -9.398 -9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start -6.35 -6.35) (end -4.572 -6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start 4.572 -6.35) (end 6.35 -6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start 6.35 -6.35) (end 6.35 -4.572) (layer F.SilkS) (width 0.381))
+    (fp_line (start 6.35 4.572) (end 6.35 6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start 6.35 6.35) (end 4.572 6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start -4.572 6.35) (end -6.35 6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start -6.35 6.35) (end -6.35 4.572) (layer F.SilkS) (width 0.381))
+    (fp_line (start -6.35 -4.572) (end -6.35 -6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start -6.985 -6.985) (end 6.985 -6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 6.985 -6.985) (end 6.985 6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 6.985 6.985) (end -6.985 6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start -6.985 6.985) (end -6.985 -6.985) (layer Eco2.User) (width 0.1524))
+    (pad SW2 thru_hole circle (at 2.54 -5.08) (size 2.5 2.5) (drill 1.4986) (layers *.Cu *.SilkS *.Mask))
+    (pad SW1 thru_hole circle (at -3.81 -2.54) (size 2.5 2.5) (drill 1.4986) (layers *.Cu *.SilkS *.Mask))
+    (pad "" np_thru_hole circle (at 0 0) (size 3.9878 3.9878) (drill 3.9878) (layers *.Cu))
+    (pad HOLE np_thru_hole circle (at -5.08 0) (size 1.7018 1.7018) (drill 1.7018) (layers *.Cu))
+    (pad "" np_thru_hole circle (at 5.08 0) (size 1.7018 1.7018) (drill 1.7018) (layers *.Cu))
+  )""",
+    #
+    # Standard, includes LEDs and mounting holes
+    #
+    "mx_led": """(module MX_LED locked (layer F.Cu) (tedit {tedit}) (tstamp {tstamp})
+    (at {x_pos} {y_pos} {rotate})
+    (descr MX_LED)
+    (tags MX_LED)
+    (fp_text reference {reference} (at 0 3) (layer B.SilkS)
+      (effects (font (size 1 1) (thickness 0.2)) (justify mirror))
+    )
+    (fp_text value {reference} (at 0 8.2) (layer F.SilkS) hide
+      (effects (font (thickness 0.3048)))
+    )
+    (fp_line (start -0.762 6.731) (end -0.762 6.35) (layer F.SilkS) (width 0.15))
+    (fp_line (start -0.762 6.35) (end -0.762 6.223) (layer F.SilkS) (width 0.15))
+    (fp_line (start -0.762 3.429) (end -0.762 3.937) (layer F.SilkS) (width 0.15))
+    (fp_arc (start 0.127 5.334) (end 1.524 6.223) (angle 90) (layer F.SilkS) (width 0.15))
+    (fp_arc (start 0.127 4.826) (end -0.762 3.429) (angle 90) (layer F.SilkS) (width 0.15))
+    (fp_arc (start 0.127 5.461) (end 0.889 6.223) (angle 90) (layer F.SilkS) (width 0.15))
+    (fp_arc (start 0.127 4.699) (end -0.635 3.937) (angle 90) (layer F.SilkS) (width 0.15))
+    (fp_text user A (at 2.794 5.08) (layer B.SilkS)
+      (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
+    )
+    (fp_text user K (at -2.794 5.08) (layer B.SilkS)
+      (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
+    )
+    (fp_text user A (at 2.794 5.08) (layer F.SilkS)
+      (effects (font (size 1 1) (thickness 0.15)))
+    )
+    (fp_text user K (at -2.794 5.08) (layer F.SilkS)
+      (effects (font (size 1 1) (thickness 0.15)))
+    )
+    (fp_line (start -6.35 -6.35) (end 6.35 -6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start 6.35 -6.35) (end 6.35 6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start 6.35 6.35) (end -6.35 6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start -6.35 6.35) (end -6.35 -6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start -9.398 -9.398) (end 9.398 -9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start 9.398 -9.398) (end 9.398 9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start 9.398 9.398) (end -9.398 9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start -9.398 9.398) (end -9.398 -9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start -6.35 -6.35) (end -4.572 -6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start 4.572 -6.35) (end 6.35 -6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start 6.35 -6.35) (end 6.35 -4.572) (layer F.SilkS) (width 0.381))
+    (fp_line (start 6.35 4.572) (end 6.35 6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start 6.35 6.35) (end 4.572 6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start -4.572 6.35) (end -6.35 6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start -6.35 6.35) (end -6.35 4.572) (layer F.SilkS) (width 0.381))
+    (fp_line (start -6.35 -4.572) (end -6.35 -6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start -6.985 -6.985) (end 6.985 -6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 6.985 -6.985) (end 6.985 6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 6.985 6.985) (end -6.985 6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start -6.985 6.985) (end -6.985 -6.985) (layer Eco2.User) (width 0.1524))
+    (pad A thru_hole circle (at 1.27 5.08) (size 2 2) (drill 1) (layers *.Cu *.SilkS *.Mask))
+    (pad K thru_hole rect (at -1.27 5.08) (size 2 2) (drill 1) (layers *.Cu *.SilkS *.Mask))
+    (pad SW2 thru_hole circle (at 2.54 -5.08) (size 2.5 2.5) (drill 1.4986) (layers *.Cu *.SilkS *.Mask))
+    (pad SW1 thru_hole circle (at -3.81 -2.54) (size 2.5 2.5) (drill 1.4986) (layers *.Cu *.SilkS *.Mask))
+    (pad "" np_thru_hole circle (at 0 0) (size 3.9878 3.9878) (drill 3.9878) (layers *.Cu))
+    (pad HOLE np_thru_hole circle (at -5.08 0) (size 1.7018 1.7018) (drill 1.7018) (layers *.Cu))
+    (pad "" np_thru_hole circle (at 5.08 0) (size 1.7018 1.7018) (drill 1.7018) (layers *.Cu))
+  )""",
+    #
+    # mx merged with alps using slots (w/LEDs + holes)
+    #
+    "mxalps": """(module MXALPS locked (layer F.Cu) (tedit {tedit}) (tstamp {tstamp})
+    (at {x_pos} {y_pos} {rotate})
+    (descr MXALPS)
+    (tags MXALPS)
+    (fp_text reference {reference} (at 0 7) (layer B.SilkS)
+      (effects (font (size 1 1) (thickness 0.2)) (justify mirror))
+    )
+    (fp_text value {reference} (at 0 8.2) (layer F.SilkS) hide
+      (effects (font (thickness 0.3048)))
+    )
+    (fp_text user A (at 2.794 5.08) (layer B.SilkS)
+      (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
+    )
+    (fp_text user K (at -2.794 5.08) (layer B.SilkS)
+      (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
+    )
+    (fp_text user A (at 2.794 5.08) (layer F.SilkS)
+      (effects (font (size 1 1) (thickness 0.15)))
+    )
+    (fp_text user K (at -2.794 5.08) (layer F.SilkS)
+      (effects (font (size 1 1) (thickness 0.15)))
+    )
+    (fp_line (start -6.35 -6.35) (end 6.35 -6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start 6.35 -6.35) (end 6.35 6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start 6.35 6.35) (end -6.35 6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start -6.35 6.35) (end -6.35 -6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start -9.398 -9.398) (end 9.398 -9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start 9.398 -9.398) (end 9.398 9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start 9.398 9.398) (end -9.398 9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start -9.398 9.398) (end -9.398 -9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start -6.35 -6.35) (end -4.572 -6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start 4.572 -6.35) (end 6.35 -6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start 6.35 -6.35) (end 6.35 -4.572) (layer F.SilkS) (width 0.381))
+    (fp_line (start 6.35 4.572) (end 6.35 6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start 6.35 6.35) (end 4.572 6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start -4.572 6.35) (end -6.35 6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start -6.35 6.35) (end -6.35 4.572) (layer F.SilkS) (width 0.381))
+    (fp_line (start -6.35 -4.572) (end -6.35 -6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start -6.985 -6.985) (end 6.985 -6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 6.985 6.985) (end -6.985 6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 6.985 6.985) (end 6.985 6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 6.985 6.4) (end 7.75 6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start -6.985 -6.4) (end -6.985 -6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start -7.75 -6.4) (end -6.985 -6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start -7.75 6.4) (end -7.75 -6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 7.75 6.4) (end 7.75 -6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start -7.75 6.4) (end -6.985 6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start -6.985 6.4) (end -6.985 6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 7.75 -6.4) (end 6.985 -6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 6.985 -6.4) (end 6.985 -6.985) (layer Eco2.User) (width 0.1524))
+    (pad "" np_thru_hole circle (at 0 0) (size 3.98781 3.98781) (drill 3.9878) (layers *.Cu *.Mask F.SilkS)
+      (clearance 0.1524))
+    (pad "" np_thru_hole circle (at -5.08 0) (size 1.70181 1.70181) (drill 1.7018) (layers *.Cu *.Mask F.SilkS)
+      (clearance 0.1524))
+    (pad "" np_thru_hole circle (at 5.08 0) (size 1.70181 1.70181) (drill 1.7018) (layers *.Cu *.Mask F.SilkS)
+      (clearance 0.1524))
+    (pad SW1 thru_hole oval (at -3.405 -3.27 330.95) (size 2.5 4.17) (drill oval 1.5 3.17) (layers *.Cu *.Mask F.SilkS))
+    (pad SW2 thru_hole oval (at 2.52 -4.79 356.1) (size 2.5 3.08) (drill oval 1.5 2.08) (layers *.Cu *.Mask F.SilkS))
+    (pad K thru_hole rect (at -1.27 5.08) (size 2 2) (drill 1) (layers *.Cu *.SilkS *.Mask))
+    (pad A thru_hole circle (at 1.27 5.08) (size 2 2) (drill 1) (layers *.Cu *.SilkS *.Mask))
+  )""",
+    #
+    # mx merged with alps rotated 180 no LEDs or holes
+    #
+    "mxalps-reversed": """(module MXALPS-REVERSED locked (layer F.Cu) (tedit {tedit}) (tstamp {tstamp})
+    (at {x_pos} {y_pos} {rotate})
+    (descr MXALPS-REVERSED)
+    (tags MXALPS-REVERSED)
+    (fp_text reference {reference} (at 0 6.731) (layer B.SilkS)
+      (effects (font (size 1 1) (thickness 0.2)) (justify mirror))
+    )
+    (fp_text value {reference} (at 0 8.2) (layer F.SilkS) hide
+      (effects (font (thickness 0.3048)))
+    )
+    (fp_line (start -6.35 -6.35) (end 6.35 -6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start 6.35 -6.35) (end 6.35 6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start 6.35 6.35) (end -6.35 6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start -6.35 6.35) (end -6.35 -6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start -9.398 -9.398) (end 9.398 -9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start 9.398 -9.398) (end 9.398 9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start 9.398 9.398) (end -9.398 9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start -9.398 9.398) (end -9.398 -9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start -6.35 -6.35) (end -4.572 -6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start 4.572 -6.35) (end 6.35 -6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start 6.35 -6.35) (end 6.35 -4.572) (layer F.SilkS) (width 0.381))
+    (fp_line (start 6.35 4.572) (end 6.35 6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start 6.35 6.35) (end 4.572 6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start -4.572 6.35) (end -6.35 6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start -6.35 6.35) (end -6.35 4.572) (layer F.SilkS) (width 0.381))
+    (fp_line (start -6.35 -4.572) (end -6.35 -6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start -6.985 -6.985) (end 6.985 -6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 6.985 6.985) (end -6.985 6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 6.985 6.985) (end 6.985 6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 6.985 6.4) (end 7.75 6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start -6.985 -6.4) (end -6.985 -6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start -7.75 -6.4) (end -6.985 -6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start -7.75 6.4) (end -7.75 -6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 7.75 6.4) (end 7.75 -6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start -7.75 6.4) (end -6.985 6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start -6.985 6.4) (end -6.985 6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 7.75 -6.4) (end 6.985 -6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 6.985 -6.4) (end 6.985 -6.985) (layer Eco2.User) (width 0.1524))
+    (pad "" np_thru_hole circle (at 0 0) (size 3.98781 3.98781) (drill 3.9878) (layers *.Cu *.Mask F.SilkS)
+      (clearance 0.1524))
+    (pad SW1 thru_hole circle (at -3.81 -2.54) (size 2.5 2.5) (drill 1.5) (layers *.Cu *.SilkS *.Mask))
+    (pad SW2 thru_hole circle (at 2.54 -5.08) (size 2.5 2.5) (drill 1.5) (layers *.Cu *.SilkS *.Mask))
+    (pad SW1 thru_hole circle (at -2.5 4.5) (size 2.5 2.5) (drill 1.5) (layers *.Cu *.SilkS *.Mask))
+    (pad SW2 thru_hole circle (at 2.5 4) (size 2.5 2.5) (drill 1.5) (layers *.Cu *.SilkS *.Mask))
+  )""",
+    #
+    # mx merged with alps, but no LEDs or holes
+    #
+    "mxalps-no-led": """(module MXALPS-NOLED locked (layer F.Cu) (tedit {tedit}) (tstamp {tstamp})
+    (at {x_pos} {y_pos} {rotate})
+    (descr MXALPS-NOLED)
+    (tags MXALPS-NOLED)
+    (fp_text reference {reference} (at 0 3.5) (layer B.SilkS)
+      (effects (font (size 1 1) (thickness 0.2)) (justify mirror))
+    )
+    (fp_text value {reference} (at 0 8.2) (layer F.SilkS) hide
+      (effects (font (thickness 0.3048)))
+    )
+    (fp_line (start -6.35 -6.35) (end 6.35 -6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start 6.35 -6.35) (end 6.35 6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start 6.35 6.35) (end -6.35 6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start -6.35 6.35) (end -6.35 -6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start -9.398 -9.398) (end 9.398 -9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start 9.398 -9.398) (end 9.398 9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start 9.398 9.398) (end -9.398 9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start -9.398 9.398) (end -9.398 -9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start -6.35 -6.35) (end -4.572 -6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start 4.572 -6.35) (end 6.35 -6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start 6.35 -6.35) (end 6.35 -4.572) (layer F.SilkS) (width 0.381))
+    (fp_line (start 6.35 4.572) (end 6.35 6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start 6.35 6.35) (end 4.572 6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start -4.572 6.35) (end -6.35 6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start -6.35 6.35) (end -6.35 4.572) (layer F.SilkS) (width 0.381))
+    (fp_line (start -6.35 -4.572) (end -6.35 -6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start -6.985 -6.985) (end 6.985 -6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 6.985 6.985) (end -6.985 6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 6.985 6.985) (end 6.985 6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 6.985 6.4) (end 7.75 6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start -6.985 -6.4) (end -6.985 -6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start -7.75 -6.4) (end -6.985 -6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start -7.75 6.4) (end -7.75 -6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 7.75 6.4) (end 7.75 -6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start -7.75 6.4) (end -6.985 6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start -6.985 6.4) (end -6.985 6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 7.75 -6.4) (end 6.985 -6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 6.985 -6.4) (end 6.985 -6.985) (layer Eco2.User) (width 0.1524))
+    (pad "" np_thru_hole circle (at 0 0) (size 3.98781 3.98781) (drill 3.9878) (layers *.Cu *.Mask F.SilkS)
+      (clearance 0.1524))
+    (pad SW1 thru_hole oval (at -3.405 -3.27 330.95) (size 2.5 4.17) (drill oval 1.5 3.17) (layers *.Cu *.Mask F.SilkS))
+    (pad SW2 thru_hole oval (at 2.52 -4.79 356.1) (size 2.5 3.08) (drill oval 1.5 2.08) (layers *.Cu *.Mask F.SilkS))
+  )""",
+
+}
+
+diode_template = """(module Diode_DO-35_SOD27_Horizontal_RM10 locked (layer F.Cu) (tedit {tedit}) (tstamp {tstamp})
+    (at {x_pos} {y_pos} {rotate})
+    (descr "Diode, DO-35,  SOD27, Horizontal, RM 10mm")
+    (tags "Diode, DO-35, SOD27, Horizontal, RM 10mm, 1N4148,")
+    (fp_text reference {reference} (at 5.43052 1.53746 270) (layer F.SilkS)
+      (effects (font (size 1 1) (thickness 0.15)))
+    )
+    (fp_text value {reference} (at 5.43052 1.53746 270) (layer F.Fab) hide
+      (effects (font (size 1 1) (thickness 0.15)))
+    )
+    (fp_line (start 7.36652 -0.00254) (end 8.76352 -0.00254) (layer F.SilkS) (width 0.15))
+    (fp_line (start 2.92152 -0.00254) (end 1.39752 -0.00254) (layer F.SilkS) (width 0.15))
+    (fp_line (start 3.30252 -0.76454) (end 3.30252 0.75946) (layer F.SilkS) (width 0.15))
+    (fp_line (start 3.04852 -0.76454) (end 3.04852 0.75946) (layer F.SilkS) (width 0.15))
+    (fp_line (start 2.79452 -0.00254) (end 2.79452 0.75946) (layer F.SilkS) (width 0.15))
+    (fp_line (start 2.79452 0.75946) (end 7.36652 0.75946) (layer F.SilkS) (width 0.15))
+    (fp_line (start 7.36652 0.75946) (end 7.36652 -0.76454) (layer F.SilkS) (width 0.15))
+    (fp_line (start 7.36652 -0.76454) (end 2.79452 -0.76454) (layer F.SilkS) (width 0.15))
+    (fp_line (start 2.79452 -0.76454) (end 2.79452 -0.00254) (layer F.SilkS) (width 0.15))
+    (pad 2 thru_hole circle (at 10.16052 -0.00254 180) (size 1.69926 1.69926) (drill 0.70104) (layers *.Cu *.Mask F.SilkS))
+    (pad 1 thru_hole rect (at 0.00052 -0.00254 180) (size 1.69926 1.69926) (drill 0.70104) (layers *.Cu *.Mask F.SilkS))
+    (model Diodes_ThroughHole.3dshapes/Diode_DO-35_SOD27_Horizontal_RM10.wrl
+      (at (xyz 0.2 0 0))
+      (scale (xyz 0.4 0.4 0.4))
+      (rotate (xyz 0 0 180))
+    )
+  )"""
 
 schem_template_header = """EESchema Schematic File Version 2
-LIBS:74xx
 LIBS:cherrymx
-LIBS:device
-LIBS:power
-LIBS:teensy_3.1
-LIBS:numbpad-cache
 EELAYER 25 0
 EELAYER END
 $Descr A2 11693 8268
@@ -92,11 +592,7 @@ version=1
 version=1
 LibDir=
 [eeschema/libraries]
-LibName1=74xx
-LibName2=cherrymx
-LibName3=device
-LibName4=power
-LibName5=teensy_3.1
+LibName1=cherrymx
 """
 
 comp_tempate = u"""$Comp
@@ -113,29 +609,29 @@ $EndComp
 """
 
 
-def place_footprint(pcb, x, y, reference=None, i=None):
-    # Place the switch
-    fp = kicad.FootprintLoad(mx_lib, mx_part)
-    pcb.Add(fp)
-    fp.Rotate(pcbnew.wxPoint(0, 0), 1800)
-    fp.SetPosition(pcbnew.wxPoint(x * spacing, y * spacing))
+def place_text_footprint(pcb_text, x, y, reference=None, i=None, timestamp=None):
     if reference is None:
         reference = "SW%d_%d" % (x, y)
-    fp.SetReference(reference)
-    fp.SetValue(reference)
-    fp.SetLocked(True)
-    # Place the diode
-    fp = kicad.FootprintLoad(diode_lib, diode_part)
-    pcb.Add(fp)
-    fp.Rotate(pcbnew.wxPoint(0, 0), 2700)
-    fp.SetPosition(pcbnew.wxPoint(x * spacing + diode_x_offset, y * spacing + diode_y_offset))
+    pcb_text.write(footprints[footprint_name].format(
+        reference=unicode(reference),
+        x_pos=x * pcb_spacing,
+        y_pos=y * pcb_spacing,
+        rotate=switch_rotate,
+        tstamp=unicode(time() if timestamp is None else timestamp),
+        tedit=unicode(time() if timestamp is None else timestamp)
+    ))
     if i is not None:
         reference = "D%d" % (i)
     if reference is None:
         reference = "D%d_%d" % (x, y)
-    fp.SetReference(reference)
-    fp.SetValue(reference)
-    fp.SetLocked(True)
+    pcb_text.write(diode_template.format(
+        reference=unicode(reference),
+        x_pos=x * pcb_spacing + diode_x_offset,
+        y_pos=y * pcb_spacing + diode_y_offset,
+        rotate=diode_rotate,
+        tstamp=unicode(time() if timestamp is None else timestamp),
+        tedit=unicode(time() if timestamp is None else timestamp)
+    ))
 
 
 def add_to_schematic(schem, x, y, timestamp=None, reference=None):
@@ -160,13 +656,28 @@ def add_to_schematic(schem, x, y, timestamp=None, reference=None):
 
 
 def main():
-    with open(output_directory + project_name + "_v2.pro", mode="w") as project_file:
+    if not os.path.exists(output_directory):
+        os.mkdir(output_directory)
+    if os.path.exists(project_file_name):
+        print "Project exists, destroy it (y/n)?"
+        if raw_input().lower() != "y":
+            return
+    if os.path.exists(schematic_file_name):
+        print "Schematic exists, destroy it (y/n)?"
+        if raw_input().lower() != "y":
+            return
+    if os.path.exists(pcb_file_name):
+        print "PCB exists, destroy it (y/n)?"
+        if raw_input().lower() != "y":
+            return
+    with open(project_file_name, mode="w") as project_file:
         project_file.write(project_template)
-    with open(layout_file_name) as lautout_file:
-        layout = json.load(lautout_file)
-    switch_sch = codecs.open(output_directory + project_name + "_v2.sch", mode="w", encoding='utf-8')
+    with open(layout_file_name) as layout_file:
+        layout = json.load(layout_file)
+    switch_sch = codecs.open(schematic_file_name, mode="w", encoding='utf-8')
     switch_sch.write(schem_template_header)
-    pcb = pcbnew.BOARD()
+    pcb_txt = codecs.open(pcb_file_name, mode="w", encoding='utf-8')
+    pcb_txt.write(pcb_header)
     x, y = x_origin, y_origin
     i = 1
     timestamp = time()
@@ -182,23 +693,22 @@ def main():
                 width = float(col.get("w", 1))
                 x += float(col.get("x", 0))
                 y += float(col.get("y", 0))
-                print col, x, y, width, y_offset
             elif isinstance(col, six.string_types):
-                print col, x, y, width, y_offset
                 ref = "SW_X%dY%d" % (x, y)
                 if col.split() and col.split()[0].isalnum():
                     ref = u"SW_" + col.split()[0]
                 ref += "_%d" % i
                 x_offset = (width - 1.0) / 2
-                place_footprint(pcb, x + x_offset, y + y_offset, ref, i)
+                place_text_footprint(pcb_txt, x + x_offset, y + y_offset, ref, i, timestamp + i)
                 add_to_schematic(switch_sch, x + x_offset, y + y_offset, timestamp + i, ref)
                 x += width
                 width = 1.0
                 i += 1
         y += 1
-    pcb.Save(output_directory + project_name + "_v2.kicad_pcb")
     switch_sch.write(schem_template_footer)
     switch_sch.close()
+    pcb_txt.write(pcb_footer)
+    pcb_txt.close()
 
 if __name__ == "__main__":
     main()
