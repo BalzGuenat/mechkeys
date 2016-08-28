@@ -1,6 +1,6 @@
-update=Tuesday, July 26, 2016 'PMt' 08:44:55 PM
+update=Friday, July 29, 2016 'PMt' 07:47:36 PM
 version=1
-last_client=eeschema
+last_client=kicad
 [pcbnew]
 version=1
 LastNetListRead=
@@ -32,3 +32,6 @@ LibDir=
 LibName1=cherrymx
 LibName2=device
 LibName3=atmel
+LibName4=conn
+LibName5=power
+LibName6=teensy_3.1

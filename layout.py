@@ -21,24 +21,25 @@ from pprint import pprint
 # mx_pcb            - MX, includes mounting holes, but no LEDs
 # mx_led            - MX, includes LEDs and mounting holes
 # mxalps            - mx merged with alps using slots (w/LEDs + holes)
+# mxalps-no_pcb     - mx merged with alps using slots (w/LEDs, but no holes)
 # mxalps-reversed   - mx merged with alps rotated 180 no LEDs or holes
 # mxalps-no-led     - mx merged with alps, but no LEDs or holes
 #
-footprint_name = "mxalps-no-led"
+footprint_name = "mx_led"
 
 # If 0 the LED slot will be at the top, if you're not using LEDs
 # rotating 180 will orient the switch in the standard cherry way
 # which is apparently more compatible with some key caps.
-switch_rotate = 180
+switch_rotate = 0
 
 # Path to the json file downloaded from http://www.keyboard-layout-editor.com/
-layout_file_name = "MetalDetector/MD-layout.json"
+layout_file_name = "numpad.json"
 
 # name that will be prepended to all output
-project_name = "text-test"
+project_name = "BluePad"
 
 # output directory
-output_directory = project_name + "-project/"
+output_directory = project_name + "-x/"
 
 # project file
 project_file_name = output_directory + project_name + ".pro"
@@ -68,9 +69,14 @@ y_origin = 1.5
 #     diode_rotate = 0
 #     diode_x_offset = -7.62
 #     diode_y_offset = -8.1
-diode_rotate = 180
-diode_x_offset = 3 * 2.54
-diode_y_offset = 8.1
+#   Bottom:
+#     diode_rotate = 180
+#     diode_x_offset = 3 * 2.54
+#     diode_y_offset = 8.1
+
+diode_rotate = 270
+diode_x_offset = -9
+diode_y_offset = -5
 
 diode_label_rotate = 0
 diode_label_x_offset = 3 * 2.54
@@ -356,6 +362,66 @@ footprints = {
     (pad "" np_thru_hole circle (at 0 0) (size 3.9878 3.9878) (drill 3.9878) (layers *.Cu))
     (pad HOLE np_thru_hole circle (at -5.08 0) (size 1.7018 1.7018) (drill 1.7018) (layers *.Cu))
     (pad "" np_thru_hole circle (at 5.08 0) (size 1.7018 1.7018) (drill 1.7018) (layers *.Cu))
+  )""",
+    #
+    # mx merged with alps using slots (w/LEDs, but no holes)
+    #
+    "mxalps-no_pcb": """(module MXALPS locked (layer F.Cu) (tedit {tedit}) (tstamp {tstamp})
+    (at {x_pos} {y_pos} {rotate})
+    (descr MXALPS)
+    (tags MXALPS)
+    (fp_text reference {reference} (at 0 7) (layer B.SilkS)
+      (effects (font (size 1 1) (thickness 0.2)) (justify mirror))
+    )
+    (fp_text value {reference} (at 0 8.2) (layer F.SilkS) hide
+      (effects (font (thickness 0.3048)))
+    )
+    (fp_text user A (at 2.794 5.08) (layer B.SilkS)
+      (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
+    )
+    (fp_text user K (at -2.794 5.08) (layer B.SilkS)
+      (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
+    )
+    (fp_text user A (at 2.794 5.08) (layer F.SilkS)
+      (effects (font (size 1 1) (thickness 0.15)))
+    )
+    (fp_text user K (at -2.794 5.08) (layer F.SilkS)
+      (effects (font (size 1 1) (thickness 0.15)))
+    )
+    (fp_line (start -6.35 -6.35) (end 6.35 -6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start 6.35 -6.35) (end 6.35 6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start 6.35 6.35) (end -6.35 6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start -6.35 6.35) (end -6.35 -6.35) (layer Cmts.User) (width 0.1524))
+    (fp_line (start -9.398 -9.398) (end 9.398 -9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start 9.398 -9.398) (end 9.398 9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start 9.398 9.398) (end -9.398 9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start -9.398 9.398) (end -9.398 -9.398) (layer Dwgs.User) (width 0.1524))
+    (fp_line (start -6.35 -6.35) (end -4.572 -6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start 4.572 -6.35) (end 6.35 -6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start 6.35 -6.35) (end 6.35 -4.572) (layer F.SilkS) (width 0.381))
+    (fp_line (start 6.35 4.572) (end 6.35 6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start 6.35 6.35) (end 4.572 6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start -4.572 6.35) (end -6.35 6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start -6.35 6.35) (end -6.35 4.572) (layer F.SilkS) (width 0.381))
+    (fp_line (start -6.35 -4.572) (end -6.35 -6.35) (layer F.SilkS) (width 0.381))
+    (fp_line (start -6.985 -6.985) (end 6.985 -6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 6.985 6.985) (end -6.985 6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 6.985 6.985) (end 6.985 6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 6.985 6.4) (end 7.75 6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start -6.985 -6.4) (end -6.985 -6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start -7.75 -6.4) (end -6.985 -6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start -7.75 6.4) (end -7.75 -6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 7.75 6.4) (end 7.75 -6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start -7.75 6.4) (end -6.985 6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start -6.985 6.4) (end -6.985 6.985) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 7.75 -6.4) (end 6.985 -6.4) (layer Eco2.User) (width 0.1524))
+    (fp_line (start 6.985 -6.4) (end 6.985 -6.985) (layer Eco2.User) (width 0.1524))
+    (pad "" np_thru_hole circle (at 0 0) (size 3.98781 3.98781) (drill 3.9878) (layers *.Cu *.Mask F.SilkS)
+      (clearance 0.1524))
+    (pad SW1 thru_hole oval (at -3.405 -3.27 330.95) (size 2.5 4.17) (drill oval 1.5 3.17) (layers *.Cu *.Mask F.SilkS))
+    (pad SW2 thru_hole oval (at 2.52 -4.79 356.1) (size 2.5 3.08) (drill oval 1.5 2.08) (layers *.Cu *.Mask F.SilkS))
+    (pad K thru_hole rect (at -1.27 5.08) (size 2 2) (drill 1) (layers *.Cu *.SilkS *.Mask))
+    (pad A thru_hole circle (at 1.27 5.08) (size 2 2) (drill 1) (layers *.Cu *.SilkS *.Mask))
   )""",
     #
     # mx merged with alps using slots (w/LEDs + holes)
@@ -705,6 +771,7 @@ def main():
                 if col.split() and col.split()[0].isalnum():
                     ref = u"SW_" + col.split()[0]
                 ref += "_%d" % i
+                ref = "SW_%d" % i  # just want them numbered by order
                 x_offset = (width - 1.0) / 2
                 place_text_footprint(pcb_txt, x + x_offset, y + y_offset, ref, i, timestamp + i)
                 add_to_schematic(switch_sch, x + x_offset, y + y_offset, timestamp + i, ref)

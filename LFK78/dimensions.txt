@@ -1,0 +1,20 @@
+Dimensions (w, h)
+14.59 x 3.72
+
+Edge:
+
+Top Left (1.145, 0.77)
+Bottom Left (1.145, 4.45)
+
+X Spacing - 2.43
+Top Y
+
+RGB10
+1.25, 2.625
+
+RGB11
+3.67, 0.875
+
+
+
+Height w/controller and cable = 17mm + 1.5mm plate

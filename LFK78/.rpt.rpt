@@ -1,0 +1,11 @@
+** Drc report for /Users/swilson/dev/mechkeys/BlueWeevil/BlueWeevil.kicad_pcb **
+** Created on 2016-08-27 19:37:55 **
+
+** Found 1 DRC errors **
+ErrType(19): Pad near pad
+    @ (86.749 mm,69.945 mm): Pad SW1 on F.Cu, B.Cu, Internal, Non-copper of SW_CapStep_39
+    @ (88.106 mm,66.675 mm): Pad on F.Cu, B.Cu, Internal, Non-copper of SW_Caps_39
+
+** Found 0 unconnected pads **
+
+** End of Report **
