@@ -43,6 +43,7 @@ _autosave-*
 .dsn
 
 # Exported BOM files
+*.rpt
 *.xml
 *.csv
 
