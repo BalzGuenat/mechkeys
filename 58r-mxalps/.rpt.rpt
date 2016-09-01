@@ -1,0 +1,41 @@
+** Drc report for /Users/swilson/dev/mechkeys/58r-mxalps/58r-mxalps.kicad_pcb **
+** Created on 2016-08-31 21:17:45 **
+
+** Found 11 DRC errors **
+ErrType(19): Pad near pad
+    @ (41.505 mm,50.895 mm): Pad SW1 on F.Cu, B.Cu, Internal, Non-copper of SW_16
+    @ (42.862 mm,47.625 mm): Pad on F.Cu, B.Cu, Internal, Non-copper of SW_17
+ErrType(19): Pad near pad
+    @ (103.418 mm,50.895 mm): Pad SW1 on F.Cu, B.Cu, Internal, Non-copper of SW_22
+    @ (104.775 mm,47.625 mm): Pad on F.Cu, B.Cu, Internal, Non-copper of SW_23
+ErrType(19): Pad near pad
+    @ (241.530 mm,50.895 mm): Pad SW1 on F.Cu, B.Cu, Internal, Non-copper of SW_30
+    @ (242.887 mm,47.625 mm): Pad on F.Cu, B.Cu, Internal, Non-copper of SW_31
+ErrType(19): Pad near pad
+    @ (303.442 mm,50.895 mm): Pad SW1 on F.Cu, B.Cu, Internal, Non-copper of SW_36
+    @ (304.800 mm,47.625 mm): Pad on F.Cu, B.Cu, Internal, Non-copper of SW_37
+ErrType(16): Two track ends too close
+    @ (45.244 mm,30.545 mm): Track 0.203 mm, net [USB-] (78) on layer B.Cu, length: 2.313 mm
+    @ (66.497 mm,51.224 mm): Track 0.203 mm, net [USB+] (79) on layer B.Cu, length: 29.482 mm
+ErrType(16): Two track ends too close
+    @ (66.091 mm,51.392 mm): Track 0.203 mm, net [USB-] (78) on layer B.Cu, length: 29.482 mm
+    @ (45.650 mm,30.377 mm): Track 0.203 mm, net [USB+] (79) on layer B.Cu, length: 2.145 mm
+ErrType(17): Two track ends too close
+    @ (45.244 mm,28.232 mm): Track 0.203 mm, net [USB-] (78) on layer B.Cu, length: 0.278 mm
+    @ (45.650 mm,30.377 mm): Track 0.203 mm, net [USB+] (79) on layer B.Cu, length: 2.145 mm
+ErrType(18): Two track ends too close
+    @ (66.091 mm,53.891 mm): Track 0.203 mm, net [USB-] (78) on layer B.Cu, length: 2.499 mm
+    @ (66.497 mm,51.224 mm): Track 0.203 mm, net [USB+] (79) on layer B.Cu, length: 29.482 mm
+ErrType(18): Two track ends too close
+    @ (64.351 mm,55.631 mm): Track 0.203 mm, net [USB-] (78) on layer B.Cu, length: 2.461 mm
+    @ (66.497 mm,54.059 mm): Track 0.203 mm, net [USB+] (79) on layer B.Cu, length: 2.835 mm
+ErrType(14): Two track ends too close
+    @ (63.678 mm,64.835 mm): Track 0.203 mm, net [USB-] (78) on layer B.Cu, length: 0.952 mm
+    @ (65.430 mm,64.835 mm): Track 0.203 mm, net [USB+] (79) on layer B.Cu, length: 0.952 mm
+ErrType(16): Two track ends too close
+    @ (64.351 mm,64.162 mm): Track 0.203 mm, net [USB-] (78) on layer B.Cu, length: 8.531 mm
+    @ (64.757 mm,55.799 mm): Track 0.203 mm, net [USB+] (79) on layer B.Cu, length: 2.461 mm
+
+** Found 0 unconnected pads **
+
+** End of Report **

@@ -1,0 +1,134 @@
+** Drc report for /Users/swilson/dev/mechkeys/58r-mxalps/58r-mxalps.kicad_pcb **
+** Created on 2016-08-31 19:49:21 **
+
+** Found 21 DRC errors **
+ErrType(19): Pad near pad
+    @ (1.6341 in,2.0037 in): Pad SW1 on F.Cu, B.Cu, Internal, Non-copper of SW_16
+    @ (1.6875 in,1.8750 in): Pad on F.Cu, B.Cu, Internal, Non-copper of SW_17
+ErrType(19): Pad near pad
+    @ (4.0716 in,2.0037 in): Pad SW1 on F.Cu, B.Cu, Internal, Non-copper of SW_22
+    @ (4.1250 in,1.8750 in): Pad on F.Cu, B.Cu, Internal, Non-copper of SW_23
+ErrType(19): Pad near pad
+    @ (9.5091 in,2.0037 in): Pad SW1 on F.Cu, B.Cu, Internal, Non-copper of SW_30
+    @ (9.5625 in,1.8750 in): Pad on F.Cu, B.Cu, Internal, Non-copper of SW_31
+ErrType(19): Pad near pad
+    @ (11.9466 in,2.0037 in): Pad SW1 on F.Cu, B.Cu, Internal, Non-copper of SW_36
+    @ (12.0000 in,1.8750 in): Pad on F.Cu, B.Cu, Internal, Non-copper of SW_37
+ErrType(4): Track near pad
+    @ (2.6936 in,3.6468 in): Track 0.0150 in, net [C7] (69) on layer F.Cu, length: 3.6723 in
+    @ (3.4843 in,3.6713 in): Pad GND on F.Cu, B.Cu, Internal of REF**
+ErrType(16): Two track ends too close
+    @ (1.7812 in,1.2026 in): Track 0.0080 in, net [USB-] (78) on layer B.Cu, length: 0.0911 in
+    @ (2.6180 in,2.0167 in): Track 0.0080 in, net [USB+] (79) on layer B.Cu, length: 1.1607 in
+ErrType(16): Two track ends too close
+    @ (2.6020 in,2.0233 in): Track 0.0080 in, net [USB-] (78) on layer B.Cu, length: 1.1607 in
+    @ (1.7973 in,1.1959 in): Track 0.0080 in, net [USB+] (79) on layer B.Cu, length: 0.0844 in
+ErrType(17): Two track ends too close
+    @ (1.7812 in,1.1115 in): Track 0.0080 in, net [USB-] (78) on layer B.Cu, length: 0.0110 in
+    @ (1.7973 in,1.1959 in): Track 0.0080 in, net [USB+] (79) on layer B.Cu, length: 0.0844 in
+ErrType(18): Two track ends too close
+    @ (2.6020 in,2.1217 in): Track 0.0080 in, net [USB-] (78) on layer B.Cu, length: 0.0984 in
+    @ (2.6180 in,2.0167 in): Track 0.0080 in, net [USB+] (79) on layer B.Cu, length: 1.1607 in
+ErrType(18): Two track ends too close
+    @ (2.5335 in,2.1902 in): Track 0.0080 in, net [USB-] (78) on layer B.Cu, length: 0.0969 in
+    @ (2.6180 in,2.1283 in): Track 0.0080 in, net [USB+] (79) on layer B.Cu, length: 0.1116 in
+ErrType(14): Two track ends too close
+    @ (2.5070 in,2.5526 in): Track 0.0080 in, net [USB-] (78) on layer B.Cu, length: 0.0375 in
+    @ (2.5760 in,2.5526 in): Track 0.0080 in, net [USB+] (79) on layer B.Cu, length: 0.0375 in
+ErrType(16): Two track ends too close
+    @ (2.5335 in,2.5261 in): Track 0.0080 in, net [USB-] (78) on layer B.Cu, length: 0.3359 in
+    @ (2.5495 in,2.1968 in): Track 0.0080 in, net [USB+] (79) on layer B.Cu, length: 0.0969 in
+ErrType(4): Track near pad
+    @ (2.9626 in,3.1378 in): Track 0.0150 in, net [GND] (89) on layer B.Cu, length: 0.0574 in
+    @ (2.9626 in,3.1378 in): Pad 3 on B.Cu, Non-copper of Y1
+ErrType(4): Track near pad
+    @ (2.9044 in,3.1386 in): Via 0.0240 in net [GND] (89) on layers F.Cu/B.Cu
+    @ (2.9626 in,3.1378 in): Pad 3 on B.Cu, Non-copper of Y1
+ErrType(4): Track near pad
+    @ (2.9921 in,3.2480 in): Track 0.0150 in, net [GND] (89) on layer B.Cu, length: 0.0807 in
+    @ (2.9626 in,3.1378 in): Pad 3 on B.Cu, Non-copper of Y1
+ErrType(4): Track near pad
+    @ (2.9921 in,3.1673 in): Track 0.0150 in, net [GND] (89) on layer B.Cu, length: 0.0418 in
+    @ (2.9626 in,3.1378 in): Pad 3 on B.Cu, Non-copper of Y1
+ErrType(4): Track near pad
+    @ (3.1201 in,3.0433 in): Track 0.0150 in, net [GND] (89) on layer B.Cu, length: 0.0709 in
+    @ (3.1201 in,3.0433 in): Pad 3 on B.Cu, Non-copper of Y1
+ErrType(4): Track near pad
+    @ (3.1201 in,3.0630 in): Track 0.0100 in, net [GND] (89) on layer B.Cu, length: 0.0807 in
+    @ (3.1201 in,3.0433 in): Pad 3 on B.Cu, Non-copper of Y1
+ErrType(4): Track near pad
+    @ (2.0854 in,3.5268 in): Track 0.0150 in, net [PC7] (98) on layer F.Cu, length: 0.0555 in
+    @ (2.1508 in,3.5636 in): Pad SW2 on F.Cu, B.Cu, Internal, Non-copper of SW_54
+ErrType(4): Track near pad
+    @ (2.1247 in,3.4876 in): Track 0.0150 in, net [PC7] (98) on layer F.Cu, length: 0.0872 in
+    @ (2.1508 in,3.5636 in): Pad SW2 on F.Cu, B.Cu, Internal, Non-copper of SW_54
+ErrType(4): Track near pad
+    @ (2.0854 in,3.6019 in): Track 0.0150 in, net [PC7] (98) on layer F.Cu, length: 0.0750 in
+    @ (2.1508 in,3.5636 in): Pad SW2 on F.Cu, B.Cu, Internal, Non-copper of SW_54
+
+** Found 21 unconnected pads **
+ErrType(2): Unconnected pads
+    @ (4.9000 in,0.9200 in): Pad 1 on F.Cu, B.Cu, Internal, Non-copper of D6 net R1
+    @ (4.5917 in,0.6004 in): Pad 1 on F.Cu, B.Cu, Internal, Non-copper of P4
+ErrType(2): Unconnected pads
+    @ (4.5200 in,1.6600 in): Pad 1 on F.Cu, B.Cu, Internal, Non-copper of D24 net R2
+    @ (4.6917 in,0.6004 in): Pad 2 on F.Cu, B.Cu, Internal, Non-copper of P4
+ErrType(2): Unconnected pads
+    @ (4.7917 in,0.6004 in): Pad 3 on F.Cu, B.Cu, Internal, Non-copper of P4 net R3
+    @ (4.9000 in,2.4200 in): Pad 1 on F.Cu, B.Cu, Internal, Non-copper of D43
+ErrType(2): Unconnected pads
+    @ (4.8917 in,0.6004 in): Pad 4 on F.Cu, B.Cu, Internal, Non-copper of P4 net R4
+    @ (4.5500 in,3.0500 in): Pad 1 on F.Cu, B.Cu, Internal, Non-copper of D58
+ErrType(2): Unconnected pads
+    @ (5.3283 in,0.6201 in): Pad 1 on F.Cu, B.Cu, Internal, Non-copper of P3 net C1
+    @ (1.6341 in,1.2537 in): Pad SW1 on F.Cu, B.Cu, Internal, Non-copper of SW_1
+ErrType(2): Unconnected pads
+    @ (5.4283 in,0.6201 in): Pad 2 on F.Cu, B.Cu, Internal, Non-copper of P3 net C2
+    @ (2.3841 in,1.2537 in): Pad SW1 on F.Cu, B.Cu, Internal, Non-copper of SW_2
+ErrType(2): Unconnected pads
+    @ (5.5283 in,0.6201 in): Pad 3 on F.Cu, B.Cu, Internal, Non-copper of P3 net C3
+    @ (3.1341 in,1.2537 in): Pad SW1 on F.Cu, B.Cu, Internal, Non-copper of SW_3
+ErrType(2): Unconnected pads
+    @ (5.6283 in,0.6201 in): Pad 4 on F.Cu, B.Cu, Internal, Non-copper of P3 net C4
+    @ (3.8841 in,1.2537 in): Pad SW1 on F.Cu, B.Cu, Internal, Non-copper of SW_4
+ErrType(2): Unconnected pads
+    @ (5.7283 in,0.6201 in): Pad 5 on F.Cu, B.Cu, Internal, Non-copper of P3 net C5
+    @ (4.6341 in,1.2537 in): Pad SW1 on F.Cu, B.Cu, Internal, Non-copper of SW_5
+ErrType(2): Unconnected pads
+    @ (5.8283 in,0.6201 in): Pad 6 on F.Cu, B.Cu, Internal, Non-copper of P3 net C6
+    @ (5.3841 in,1.2537 in): Pad SW1 on F.Cu, B.Cu, Internal, Non-copper of SW_6
+ErrType(2): Unconnected pads
+    @ (5.9283 in,0.6201 in): Pad 7 on F.Cu, B.Cu, Internal, Non-copper of P3 net C7
+    @ (6.1341 in,1.2537 in): Pad SW1 on F.Cu, B.Cu, Internal, Non-copper of SW_7
+ErrType(2): Unconnected pads
+    @ (6.0283 in,0.6201 in): Pad 8 on F.Cu, B.Cu, Internal, Non-copper of P3 net C8
+    @ (6.8841 in,1.2537 in): Pad SW1 on F.Cu, B.Cu, Internal, Non-copper of SW_8
+ErrType(2): Unconnected pads
+    @ (6.1283 in,0.6201 in): Pad 9 on F.Cu, B.Cu, Internal, Non-copper of P3 net C9
+    @ (7.6341 in,1.2537 in): Pad SW1 on F.Cu, B.Cu, Internal, Non-copper of SW_9
+ErrType(2): Unconnected pads
+    @ (8.3841 in,1.2537 in): Pad SW1 on F.Cu, B.Cu, Internal, Non-copper of SW_10 net C10
+    @ (6.2283 in,0.6201 in): Pad 10 on F.Cu, B.Cu, Internal, Non-copper of P3
+ErrType(2): Unconnected pads
+    @ (9.1341 in,1.2537 in): Pad SW1 on F.Cu, B.Cu, Internal, Non-copper of SW_11 net C11
+    @ (6.3283 in,0.6201 in): Pad 11 on F.Cu, B.Cu, Internal, Non-copper of P3
+ErrType(2): Unconnected pads
+    @ (2.3847 in,3.1050 in): Pad 39 on B.Cu, Non-copper of U1 net C12
+    @ (6.4283 in,0.6201 in): Pad 12 on F.Cu, B.Cu, Internal, Non-copper of P3
+ErrType(2): Unconnected pads
+    @ (10.6341 in,1.2537 in): Pad SW1 on F.Cu, B.Cu, Internal, Non-copper of SW_13 net C13
+    @ (6.5283 in,0.6201 in): Pad 13 on F.Cu, B.Cu, Internal, Non-copper of P3
+ErrType(2): Unconnected pads
+    @ (2.3847 in,3.1680 in): Pad 37 on B.Cu, Non-copper of U1 net C14
+    @ (6.6283 in,0.6201 in): Pad 14 on F.Cu, B.Cu, Internal, Non-copper of P3
+ErrType(2): Unconnected pads
+    @ (6.7283 in,0.6201 in): Pad 15 on F.Cu, B.Cu, Internal, Non-copper of P3 net C15
+    @ (12.1341 in,1.2537 in): Pad SW1 on F.Cu, B.Cu, Internal, Non-copper of SW_15
+ErrType(2): Unconnected pads
+    @ (1.3386 in,0.9843 in): Pad 2 on B.Cu, Non-copper of C3 net GND
+    @ (1.4780 in,0.8071 in): Pad 3 on F.Cu, B.Cu, Internal, Non-copper of P2
+ErrType(2): Unconnected pads
+    @ (0.6496 in,0.9449 in): Pad GND on F.Cu, B.Cu, Internal of REF** net GND
+    @ (1.3386 in,0.9843 in): Pad 2 on B.Cu, Non-copper of C3
+
+** End of Report **

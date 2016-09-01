@@ -18,3 +18,7 @@ RGB11
 
 
 Height w/controller and cable = 17mm + 1.5mm plate
+
+
+PCB 92.5mm x 367.75mm
+0 margin plate: 95.25 x 371.5mm

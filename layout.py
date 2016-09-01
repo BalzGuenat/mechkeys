@@ -25,7 +25,7 @@ from pprint import pprint
 # mxalps-reversed   - mx merged with alps rotated 180 no LEDs or holes
 # mxalps-no-led     - mx merged with alps, but no LEDs or holes
 #
-footprint_name = "mx_led"
+footprint_name = "mxalps"
 
 # If 0 the LED slot will be at the top, if you're not using LEDs
 # rotating 180 will orient the switch in the standard cherry way
@@ -33,13 +33,13 @@ footprint_name = "mx_led"
 switch_rotate = 0
 
 # Path to the json file downloaded from http://www.keyboard-layout-editor.com/
-layout_file_name = "numpad.json"
+layout_file_name = "58r.json"
 
 # name that will be prepended to all output
-project_name = "BluePad"
+project_name = "58r-mxalps"
 
 # output directory
-output_directory = project_name + "-x/"
+output_directory = project_name + "/"
 
 # project file
 project_file_name = output_directory + project_name + ".pro"
