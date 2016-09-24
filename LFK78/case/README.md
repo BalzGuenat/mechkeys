@@ -7,8 +7,8 @@ You'll need one of each:
 All plates support Alps and Cherry switches, the only differences are the stabilizers. If you're planning an alps board, double check everything, there isn't much standardization.
 
 * `P2_LFK78_Alps.dxf` Cherry/costar stabilizer for spacebar, Matias/Alps on the rest.
-* `P2_LFK78_CherryStab.dxf` Cherry/costar stabilizers. 
-* `P2_LFK78_CostarStab.dxf` Cherry stabilizers.
+* `P2_LFK78_CherryStab.dxf` Cherry stabilizers. 
+* `P2_LFK78_CostarStab.dxf` Cherry/costar stabilizers.
 
 
 ### Spacer
