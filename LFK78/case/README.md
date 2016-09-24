@@ -6,7 +6,7 @@ You'll need one of each:
 
 All plates support Alps and Cherry switches, the only differences are the stabilizers. If you're planning an alps board, double check everything, there isn't much standardization.
 
-Plates should be 1.5mm, it will be strong enough for daily use, but excersize care seating keycaps and support the PCB from behind.
+Plates should be 1.5mm, it will be strong enough for daily use, but exercise care seating keycaps and support the PCB from behind.
 
 * `P2_LFK78_Alps.dxf` Cherry/costar stabilizer for spacebar, Matias/Alps on the rest.
 * `P2_LFK78_CherryStab.dxf` Cherry stabilizers. 
