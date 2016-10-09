@@ -9,8 +9,8 @@ All plates support Alps and Cherry switches, the only differences are the stabil
 Plates should be 1.5mm, it will be strong enough for daily use, but exercise care seating keycaps and support the PCB from behind.
 
 * `P2_LFK78_Alps.dxf` Cherry/costar stabilizer for spacebar, Matias/Alps on the rest.
-* `P2_LFK78_CherryStab.dxf` Cherry stabilizers. 
-* `P2_LFK78_CostarStab.dxf` Cherry/costar stabilizers.
+* `P2_LFK78_CherryStab.dxf` Cherry/costar stabilizers. 
+* `P2_LFK78_CostarStab.dxf` Costar stabilizers.
 
 
 ### Spacer
