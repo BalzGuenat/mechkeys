@@ -30,13 +30,13 @@ footprint_name = "mxalps"
 # If 0 the LED slot will be at the top, if you're not using LEDs
 # rotating 180 will orient the switch in the standard cherry way
 # which is apparently more compatible with some key caps.
-switch_rotate = 0
+switch_rotate = 180
 
 # Path to the json file downloaded from http://www.keyboard-layout-editor.com/
-layout_file_name = "58r.json"
+layout_file_name = "lfk_revc.json"
 
 # name that will be prepended to all output
-project_name = "58r-mxalps"
+project_name = "lfk_revc"
 
 # output directory
 output_directory = project_name + "/"
@@ -60,11 +60,14 @@ y_origin = 1.5
 # WARNING: You almost certainly need to move some diodes manually. In
 # particular check for overlap with stabilizers.
 #
-# Examples:
+# Through hole examples:
 #   Left side:
 #     diode_rotate = 270
 #     diode_x_offset = -9
 #     diode_y_offset = -5
+#     diode_label_rotate = 0
+#     diode_label_x_offset = 3 * 2.54
+#     diode_label_y_offset = -1.6
 #   Top:
 #     diode_rotate = 0
 #     diode_x_offset = -7.62
@@ -74,13 +77,16 @@ y_origin = 1.5
 #     diode_x_offset = 3 * 2.54
 #     diode_y_offset = 8.1
 
-diode_rotate = 270
-diode_x_offset = -9
-diode_y_offset = -5
+diode_template = "diode_smd"
+# diode_template = "diode_smd"  # 'diode_smd' or 'diode_th'
 
-diode_label_rotate = 0
-diode_label_x_offset = 3 * 2.54
-diode_label_y_offset = -1.6
+diode_rotate = 90
+diode_x_offset = -5
+diode_y_offset = 5.1
+
+diode_label_rotate = 90
+diode_label_x_offset = 0
+diode_label_y_offset = -1.8
 
 # Schematic
 #   Switches
@@ -581,10 +587,35 @@ footprints = {
     (pad SW1 thru_hole oval (at -3.405 -3.27 330.95) (size 2.5 4.17) (drill oval 1.5 3.17) (layers *.Cu *.Mask F.SilkS))
     (pad SW2 thru_hole oval (at 2.52 -4.79 356.1) (size 2.5 3.08) (drill oval 1.5 2.08) (layers *.Cu *.Mask F.SilkS))
   )""",
+    "diode_smd": """(module Diodes_SMD:SOD-123 (layer B.Cu) (tedit 5530FCB9) (tstamp 57436F4A)
+    (at {x_pos} {y_pos} {rotate})
+    (descr SOD-123)
+    (tags SOD-123)
+    (attr smd)
+    (fp_text reference {reference} (at {label_x_pos} {label_y_pos} {label_rotate}) (layer B.SilkS)
+      (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
+    )
+    (fp_text value {reference} (at {label_x_pos} {label_y_pos} {label_rotate}) (layer B.Fab) hide
+      (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
+    )
+    (fp_line (start 0.3175 0) (end 0.6985 0) (layer B.SilkS) (width 0.15))
+    (fp_line (start -0.6985 0) (end -0.3175 0) (layer B.SilkS) (width 0.15))
+    (fp_line (start -0.3175 0) (end 0.3175 0.381) (layer B.SilkS) (width 0.15))
+    (fp_line (start 0.3175 0.381) (end 0.3175 -0.381) (layer B.SilkS) (width 0.15))
+    (fp_line (start 0.3175 -0.381) (end -0.3175 0) (layer B.SilkS) (width 0.15))
+    (fp_line (start -0.3175 0.508) (end -0.3175 -0.508) (layer B.SilkS) (width 0.15))
+    (fp_line (start -2.25 1.05) (end 2.25 1.05) (layer B.CrtYd) (width 0.05))
+    (fp_line (start 2.25 1.05) (end 2.25 -1.05) (layer B.CrtYd) (width 0.05))
+    (fp_line (start 2.25 -1.05) (end -2.25 -1.05) (layer B.CrtYd) (width 0.05))
+    (fp_line (start -2.25 1.05) (end -2.25 -1.05) (layer B.CrtYd) (width 0.05))
+    (fp_line (start -2 -0.9) (end 1.54 -0.9) (layer B.SilkS) (width 0.15))
+    (fp_line (start -2 0.9) (end 1.54 0.9) (layer B.SilkS) (width 0.15))
+    (pad 1 smd rect (at -1.635 0 270) (size 0.91 1.22) (layers B.Cu B.Paste B.Mask))
+    (pad 2 smd rect (at 1.635 0 270) (size 0.91 1.22) (layers B.Cu B.Paste B.Mask))
+  )
 
-}
-
-diode_template = """(module Diode_DO-35_SOD27_Horizontal_RM10 locked (layer F.Cu) (tedit {tedit}) (tstamp {tstamp})
+    """,
+    "diode_th": """(module Diode_DO-35_SOD27_Horizontal_RM10 locked (layer F.Cu) (tedit {tedit}) (tstamp {tstamp})
     (at {x_pos} {y_pos} {rotate})
     (descr "Diode, DO-35,  SOD27, Horizontal, RM 10mm")
     (tags "Diode, DO-35, SOD27, Horizontal, RM 10mm, 1N4148,")
@@ -610,7 +641,8 @@ diode_template = """(module Diode_DO-35_SOD27_Horizontal_RM10 locked (layer F.Cu
       (scale (xyz 0.4 0.4 0.4))
       (rotate (xyz 0 0 180))
     )
-  )"""
+  )""",
+}
 
 schem_template_header = """EESchema Schematic File Version 2
 LIBS:cherrymx
@@ -662,21 +694,75 @@ version=1
 version=1
 LibDir=
 [eeschema/libraries]
-LibName1=cherrymx
+LibName1=/Users/swilson/dev/mechkeys/kicad-libs/cherrymx
+LibName2=device
 """
 
-comp_tempate = u"""$Comp
+component_templates = {
+    "switch": u"""$Comp
 L MX_LED %(ref)s
 U %(pkg)d 1 %(timestamp)x
 P %(x)d %(y)d
 F 0 "%(ref)s" H %(x)d %(ref_y)d 60  0000 C CNN
 F 1 "MX_LED" H %(x)d %(y)d 60  0001 C CNN
 F 2 "" H %(x)d %(y)d 60  0000 C CNN
-F 3 "xasf" H %(x)d %(y)d 60  0000 C CNN
+F 3 "" H %(x)d %(y)d 60  0000 C CNN
     %(pkg)d    %(x)d %(y)d
     1    0    0    -1
-$EndComp
-"""
+$EndComp""",
+    "led": u"""$Comp
+L MX_LED %(ref)s
+U %(pkg)d 1 %(timestamp)x
+P %(x)d %(y)d
+F 0 "%(ref)s" H %(x)d %(ref_y)d 60  0000 C CNN
+F 1 "MX_LED" H %(x)d %(y)d 60  0001 C CNN
+F 2 "" H %(x)d %(y)d 60  0000 C CNN
+F 3 "" H %(x)d %(y)d 60  0000 C CNN
+    %(pkg)d    %(x)d %(y)d
+    0    1    1    0
+$EndComp""",
+    "diode": u"""$Comp
+L D D%(ref)s
+U %(pkg)d 1 %(timestamp)x
+P %(x)d %(y)d
+F 0 "%(ref)s" H %(ref_x)d %(ref_y)d 60  0000 C CNN
+F 1 "D" H %(x)d %(y)d 60  0001 C CNN
+F 2 "" H %(x)d %(y)d 60  0000 C CNN
+F 3 "" H %(x)d %(y)d 60  0000 C CNN
+    %(pkg)d    %(x)d %(y)d
+    0    -1   -1   0
+$EndComp"""
+}
+
+
+def add_to_schematic(schem, x, y, timestamp=None, reference=None):
+    if reference is None:
+        reference = "%d_%d" % (x, y)
+    schem.write(component_templates["switch"] % {
+        "x": int((x * sw_spacing + sw_x_origin) / 100) * 100,
+        "y": int((y * sw_spacing + sw_y_origin) / 100) * 100,
+        "ref_y": y * sw_spacing + sw_y_origin - 100,
+        "pkg": 1,
+        "ref": unicode(reference),
+        "timestamp": time() if timestamp is None else timestamp
+    })
+    schem.write(component_templates["led"] % {
+        "x": int((x * led_spacing + led_x_origin) / 100) * 100,
+        "y": int((y * led_spacing + led_y_origin) / 100) * 100,
+        "ref_y": y * led_spacing + led_y_origin - 150,
+        "pkg": 2,
+        "ref": unicode(reference),
+        "timestamp": time() if timestamp is None else timestamp + 1
+    })
+    schem.write(component_templates["diode"] % {
+        "x": int((x * sw_spacing + sw_x_origin) / 100) * 100 + 400,
+        "y": int((y * sw_spacing + sw_y_origin) / 100) * 100 + 150,
+        "ref_x": int((x * sw_spacing + sw_x_origin) / 100) * 100 + 400,
+        "ref_y": int((y * sw_spacing + sw_y_origin) / 100) * 100 + 250,
+        "pkg": 1,
+        "ref": unicode(reference.replace("SW_", "D")),
+        "timestamp": time() if timestamp is None else timestamp
+    })
 
 
 def place_text_footprint(pcb_text, x, y, reference=None, i=None, timestamp=None):
@@ -694,7 +780,7 @@ def place_text_footprint(pcb_text, x, y, reference=None, i=None, timestamp=None)
         reference = "D%d" % (i)
     if reference is None:
         reference = "D%d_%d" % (x, y)
-    pcb_text.write(diode_template.format(
+    pcb_text.write(footprints[diode_template].format(
         reference=unicode(reference),
         x_pos=x * pcb_spacing + diode_x_offset,
         y_pos=y * pcb_spacing + diode_y_offset,
@@ -705,27 +791,6 @@ def place_text_footprint(pcb_text, x, y, reference=None, i=None, timestamp=None)
         tstamp=unicode(time() if timestamp is None else timestamp),
         tedit=unicode(time() if timestamp is None else timestamp)
     ))
-
-
-def add_to_schematic(schem, x, y, timestamp=None, reference=None):
-    if reference is None:
-        reference = "sw%d_%d" % (x, y)
-    schem.write(comp_tempate % {
-        "x": x * sw_spacing + sw_x_origin,
-        "y": y * sw_spacing + sw_y_origin,
-        "ref_y": y * sw_spacing + sw_y_origin - 150,
-        "pkg": 1,
-        "ref": unicode(reference),
-        "timestamp": time() if timestamp is None else timestamp
-    })
-    schem.write(comp_tempate % {
-        "x": x * led_spacing + led_x_origin,
-        "y": y * led_spacing + led_y_origin,
-        "ref_y": y * led_spacing + led_y_origin - 150,
-        "pkg": 2,
-        "ref": unicode(reference),
-        "timestamp": time() if timestamp is None else timestamp + 1
-    })
 
 
 def main():
