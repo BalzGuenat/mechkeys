@@ -1,4 +1,4 @@
-update=Wednesday, November 02, 2016 'PMt' 03:59:31 PM
+update=Saturday, November 26, 2016 'PMt' 06:27:58 PM
 version=1
 last_client=kicad
 [pcbnew]
@@ -25,6 +25,16 @@ version=1
 NetIExt=net
 [general]
 version=1
+[schematic_editor]
+version=1
+PageLayoutDescrFile=
+PlotDirectoryName=
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=
+SpiceForceRefPrefix=0
+SpiceUseNetNumbers=0
+LabSize=60
 [eeschema]
 version=1
 LibDir=
@@ -32,3 +42,4 @@ LibDir=
 LibName1=/Users/swilson/dev/mechkeys/kicad-libs/cherrymx
 LibName2=device
 LibName3=power
+LibName4=conn

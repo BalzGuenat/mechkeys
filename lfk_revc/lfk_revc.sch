@@ -2,6 +2,7 @@ EESchema Schematic File Version 2
 LIBS:cherrymx
 LIBS:device
 LIBS:power
+LIBS:conn
 LIBS:lfk_revc-cache
 EELAYER 25 0
 EELAYER END
@@ -2951,15 +2952,15 @@ Wire Wire Line
 Wire Wire Line
 	10400 5000 10400 4800
 Wire Wire Line
-	700  1300 17500 1300
+	700  1300 20300 1300
 Wire Wire Line
-	700  2300 17800 2300
+	700  2300 20300 2300
 Wire Wire Line
 	700  3300 16800 3300
 Wire Wire Line
 	700  4300 15300 4300
 Wire Wire Line
-	700  5300 16300 5300
+	700  5300 20300 5300
 Connection ~ 16000 1300
 Connection ~ 15000 1300
 Connection ~ 14000 1300
@@ -3234,7 +3235,7 @@ Wire Wire Line
 Wire Wire Line
 	17000 1400 17000 2500
 Wire Wire Line
-	17000 2500 17100 2500
+	17000 2500 17500 2500
 Connection ~ 17000 2000
 Connection ~ 17000 1800
 Wire Wire Line
@@ -3276,7 +3277,7 @@ Wire Wire Line
 Text GLabel 16900 4300 0    60   Input ~ 0
 R4
 Wire Wire Line
-	16900 4300 17100 4300
+	16900 4300 19300 4300
 Connection ~ 15800 3000
 Connection ~ 16800 3000
 Connection ~ 16800 3300
@@ -5029,13 +5030,13 @@ Text GLabel 20800 10200 2    60   Input ~ 0
 C13
 Text GLabel 20800 10300 2    60   Input ~ 0
 C14
-Text GLabel 20800 10400 2    60   Input ~ 0
+Text GLabel 20800 7300 2    60   Input ~ 0
 C15
-Text GLabel 20800 10500 2    60   Input ~ 0
+Text GLabel 20800 7400 2    60   Input ~ 0
 C16
-Text GLabel 20800 10600 2    60   Input ~ 0
+Text GLabel 20800 7500 2    60   Input ~ 0
 C17
-Text GLabel 20800 10700 2    60   Input ~ 0
+Text GLabel 20800 7600 2    60   Input ~ 0
 C18
 Text GLabel 20800 8400 2    60   Input ~ 0
 R1
@@ -5180,7 +5181,7 @@ L R R6
 U 1 1 581B463E
 P 21050 13500
 F 0 "R6" V 21130 13500 50  0000 C CNN
-F 1 "4.7kΩ" V 21050 13500 50  0000 C CNN
+F 1 "150" V 21050 13500 50  0000 C CNN
 F 2 "Resistors_SMD:R_0805_HandSoldering" V 20980 13500 50  0001 C CNN
 F 3 "" H 21050 13500 50  0000 C CNN
 	1    21050 13500
@@ -5191,7 +5192,7 @@ L R R7
 U 1 1 581B463F
 P 21050 13700
 F 0 "R7" V 21130 13700 50  0000 C CNN
-F 1 "4.7kΩ" V 21050 13700 50  0000 C CNN
+F 1 "120" V 21050 13700 50  0000 C CNN
 F 2 "Resistors_SMD:R_0805_HandSoldering" V 20980 13700 50  0001 C CNN
 F 3 "" H 21050 13700 50  0000 C CNN
 	1    21050 13700
@@ -5202,7 +5203,7 @@ L R R8
 U 1 1 581B4640
 P 21050 13900
 F 0 "R8" V 21130 13900 50  0000 C CNN
-F 1 "4.7kΩ" V 21050 13900 50  0000 C CNN
+F 1 "120" V 21050 13900 50  0000 C CNN
 F 2 "Resistors_SMD:R_0805_HandSoldering" V 20980 13900 50  0001 C CNN
 F 3 "" H 21050 13900 50  0000 C CNN
 	1    21050 13900
@@ -5673,21 +5674,19 @@ F 3 "" H 2205 14050 50  0000 C CNN
 	1    2250 14100
 	0    -1   -1   0   
 $EndComp
-Text GLabel 2250 13900 1    60   Input ~ 0
-R_CA1
-Text GLabel 4050 13900 1    60   Input ~ 0
-R_CA3
 Text GLabel 3150 13900 1    60   Input ~ 0
+R_CA3
+Text GLabel 2250 13900 1    60   Input ~ 0
 R_CA2
-Text GLabel 4950 13900 1    60   Input ~ 0
+Text GLabel 4050 13900 1    60   Input ~ 0
 R_CA4
-Text GLabel 5950 13875 1    60   Input ~ 0
+Text GLabel 4950 13900 1    60   Input ~ 0
 R_CA5
-Text GLabel 6850 13900 1    60   Input ~ 0
+Text GLabel 5950 13900 1    60   Input ~ 0
 R_CA6
-Text GLabel 7750 13875 1    60   Input ~ 0
+Text GLabel 6850 13900 1    60   Input ~ 0
 R_CA7
-Text GLabel 8650 13900 1    60   Input ~ 0
+Text GLabel 7750 13900 1    60   Input ~ 0
 R_CA8
 Text GLabel 1675 15750 0    60   Input ~ 0
 R_CA9
@@ -5721,4 +5720,138 @@ Text GLabel 1675 15850 0    60   Input ~ 0
 R_CA8
 Text GLabel 1675 15950 0    60   Input ~ 0
 R_CA7
+Connection ~ 16300 5300
+Connection ~ 18300 5300
+Connection ~ 19300 5300
+Connection ~ 17100 4300
+Connection ~ 17800 2300
+Connection ~ 19300 2300
+Wire Wire Line
+	18500 700  18500 5000
+Connection ~ 18500 4000
+Connection ~ 18500 2000
+Connection ~ 19500 2000
+Wire Wire Line
+	17500 2500 17500 5000
+Text GLabel 18500 700  1    60   Input ~ 0
+C17
+Text GLabel 19500 700  1    60   Input ~ 0
+C18
+Connection ~ 18500 1000
+Connection ~ 19500 1000
+Wire Wire Line
+	19500 5000 19500 700 
+Connection ~ 19300 1300
+Connection ~ 17500 1300
+Text GLabel 8650 13900 1    60   Input ~ 0
+R_CA9
+$Comp
+L CONN_02X05 P3
+U 1 1 583A342A
+P 15650 9700
+F 0 "P3" H 15650 10000 50  0000 C CNN
+F 1 "CONN_02X05" H 15650 9400 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_2x05" H 15650 8500 50  0001 C CNN
+F 3 "" H 15650 8500 50  0000 C CNN
+	1    15650 9700
+	1    0    0    -1  
+$EndComp
+Text GLabel 15400 9500 0    60   Input ~ 0
+TCK
+Text GLabel 15400 9600 0    60   Input ~ 0
+TDO
+Text GLabel 15400 9700 0    60   Input ~ 0
+TMS
+Text GLabel 15400 9900 0    60   Input ~ 0
+TDI
+Text GLabel 16100 9700 2    60   Input ~ 0
+RESET
+$Comp
+L GND #PWR024
+U 1 1 583AE155
+P 16000 10000
+F 0 "#PWR024" H 16000 9750 50  0001 C CNN
+F 1 "GND" H 16000 9850 50  0000 C CNN
+F 2 "" H 16000 10000 50  0000 C CNN
+F 3 "" H 16000 10000 50  0000 C CNN
+	1    16000 10000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	15900 9500 16000 9500
+Wire Wire Line
+	16000 9500 16000 10000
+Wire Wire Line
+	15900 9900 16000 9900
+Connection ~ 16000 9900
+Wire Wire Line
+	15900 9700 16100 9700
+Text GLabel 20800 10400 2    60   Input ~ 0
+TCK
+Text GLabel 20800 10600 2    60   Input ~ 0
+TDO
+Text GLabel 20800 10500 2    60   Input ~ 0
+TMS
+Text GLabel 20800 10700 2    60   Input ~ 0
+TDI
+$Comp
+L +5V #PWR025
+U 1 1 583B4C8D
+P 16100 9400
+F 0 "#PWR025" H 16100 9250 50  0001 C CNN
+F 1 "+5V" H 16100 9540 50  0000 C CNN
+F 2 "" H 16100 9400 50  0000 C CNN
+F 3 "" H 16100 9400 50  0000 C CNN
+	1    16100 9400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	15900 9600 16100 9600
+Wire Wire Line
+	16100 9600 16100 9400
+$Comp
+L CONN_01X03 P4
+U 1 1 583B84A0
+P 15600 10800
+F 0 "P4" H 15600 11000 50  0000 C CNN
+F 1 "CONN_01X03" V 15700 10800 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x03" H 15600 10800 50  0001 C CNN
+F 3 "" H 15600 10800 50  0000 C CNN
+	1    15600 10800
+	-1   0    0    1   
+$EndComp
+$Comp
+L +5V #PWR026
+U 1 1 583B99AD
+P 15900 10600
+F 0 "#PWR026" H 15900 10450 50  0001 C CNN
+F 1 "+5V" H 15900 10740 50  0000 C CNN
+F 2 "" H 15900 10600 50  0000 C CNN
+F 3 "" H 15900 10600 50  0000 C CNN
+	1    15900 10600
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR027
+U 1 1 583B9D99
+P 15900 11000
+F 0 "#PWR027" H 15900 10750 50  0001 C CNN
+F 1 "GND" H 15900 10850 50  0000 C CNN
+F 2 "" H 15900 11000 50  0000 C CNN
+F 3 "" H 15900 11000 50  0000 C CNN
+	1    15900 11000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	15800 10900 15900 10900
+Wire Wire Line
+	15900 10900 15900 11000
+Text GLabel 16100 10700 2    60   Input ~ 0
+AUDIO
+Wire Wire Line
+	15800 10700 16100 10700
+Wire Wire Line
+	15800 10800 15900 10800
+Wire Wire Line
+	15900 10800 15900 10600
 $EndSCHEMATC
