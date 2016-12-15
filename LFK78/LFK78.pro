@@ -1,4 +1,4 @@
-update=Tuesday, November 15, 2016 'AMt' 07:51:20 AM
+update=Thursday, August 18, 2016 'PMt' 11:40:01 PM
 version=1
 last_client=kicad
 [pcbnew]
@@ -37,13 +37,3 @@ LibName5=teensy_3.1
 LibName6=atmel
 LibName7=conn
 LibName8=contrib_symbols_dl1eic/Symbols_EN60617_13Mar2013
-[schematic_editor]
-version=1
-PageLayoutDescrFile=
-PlotDirectoryName=
-SubpartIdSeparator=0
-SubpartFirstId=65
-NetFmtName=
-SpiceForceRefPrefix=0
-SpiceUseNetNumbers=0
-LabSize=60
