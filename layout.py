@@ -33,10 +33,10 @@ footprint_name = "mxalps"
 switch_rotate = 180
 
 # Path to the json file downloaded from http://www.keyboard-layout-editor.com/
-layout_file_name = "lfk_revc.json"
+layout_file_name = "splitshift.json"
 
 # name that will be prepended to all output
-project_name = "lfk_revc"
+project_name = "splitshift"
 
 # output directory
 output_directory = project_name + "/"

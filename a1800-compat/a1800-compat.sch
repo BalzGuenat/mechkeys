@@ -3167,7 +3167,7 @@ Connection ~ 6100 10100
 Wire Wire Line
 	6850 9100 6850 8900
 Wire Wire Line
-	7650 9250 7650 8900
+	7650 8900 7650 9250
 Wire Wire Line
 	7900 9250 7900 9100
 Wire Wire Line
@@ -3489,15 +3489,15 @@ Text GLabel 9200 13200 2    60   Input ~ 0
 C12
 Text GLabel 9200 13300 2    60   Input ~ 0
 C13
-Text GLabel 9200 13400 2    60   Input ~ 0
+Text GLabel 9200 10400 2    60   Input ~ 0
 C14
-Text GLabel 9200 13500 2    60   Input ~ 0
+Text GLabel 9200 10500 2    60   Input ~ 0
 C15
-Text GLabel 9200 13600 2    60   Input ~ 0
+Text GLabel 9200 10600 2    60   Input ~ 0
 C16
-Text GLabel 9200 13700 2    60   Input ~ 0
+Text GLabel 9200 10700 2    60   Input ~ 0
 C17
-Text GLabel 9200 13800 2    60   Input ~ 0
+Text GLabel 9200 10800 2    60   Input ~ 0
 C18
 Text GLabel 9200 11500 2    60   Input ~ 0
 R1
@@ -3691,4 +3691,68 @@ Wire Wire Line
 	12200 9200 12400 9200
 Wire Wire Line
 	12400 9200 12400 9000
+Text GLabel 9200 13500 2    60   Input ~ 0
+TCK
+Text GLabel 9200 13700 2    60   Input ~ 0
+TDO
+Text GLabel 9200 13600 2    60   Input ~ 0
+TMS
+Text GLabel 9200 13800 2    60   Input ~ 0
+TDI
+$Comp
+L CONN_02X05 P3
+U 1 1 5860B280
+P 1750 11600
+F 0 "P3" H 1750 11900 50  0000 C CNN
+F 1 "CONN_02X05" H 1750 11300 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_2x05" H 1750 10400 50  0001 C CNN
+F 3 "" H 1750 10400 50  0000 C CNN
+	1    1750 11600
+	1    0    0    -1  
+$EndComp
+Text GLabel 2400 11600 2    60   Input ~ 0
+RESET
+$Comp
+L +5V #PWR017
+U 1 1 58610ED6
+P 2200 11300
+F 0 "#PWR017" H 2200 11150 50  0001 C CNN
+F 1 "+5V" H 2200 11440 50  0000 C CNN
+F 2 "" H 2200 11300 50  0000 C CNN
+F 3 "" H 2200 11300 50  0000 C CNN
+	1    2200 11300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2000 11400 2200 11400
+Wire Wire Line
+	2200 11400 2200 11300
+Wire Wire Line
+	2000 11600 2400 11600
+Wire Wire Line
+	2000 11500 2100 11500
+Wire Wire Line
+	2100 11500 2100 12000
+Wire Wire Line
+	2100 11800 2000 11800
+$Comp
+L GND #PWR018
+U 1 1 58611DC2
+P 2100 12000
+F 0 "#PWR018" H 2100 11750 50  0001 C CNN
+F 1 "GND" H 2100 11850 50  0000 C CNN
+F 2 "" H 2100 12000 50  0000 C CNN
+F 3 "" H 2100 12000 50  0000 C CNN
+	1    2100 12000
+	1    0    0    -1  
+$EndComp
+Connection ~ 2100 11800
+Text GLabel 1500 11400 0    60   Input ~ 0
+TCK
+Text GLabel 1500 11500 0    60   Input ~ 0
+TDO
+Text GLabel 1500 11600 0    60   Input ~ 0
+TMS
+Text GLabel 1500 11800 0    60   Input ~ 0
+TDI
 $EndSCHEMATC
