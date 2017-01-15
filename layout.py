@@ -33,10 +33,10 @@ footprint_name = "mxalps"
 switch_rotate = 180
 
 # Path to the json file downloaded from http://www.keyboard-layout-editor.com/
-layout_file_name = "splitshift.json"
+layout_file_name = "EL87.json"
 
 # name that will be prepended to all output
-project_name = "splitshift"
+project_name = "EL87"
 
 # output directory
 output_directory = project_name + "/"
@@ -168,7 +168,8 @@ pcb_header = """(kicad_pcb (version 4) (host pcbnew 4.0.2-stable)
     (mod_text_width 0.15)
     (pad_size 1.524 1.524)
     (pad_drill 0.762)
-    (pad_to_mask_clearance 0.2)
+    (pad_to_mask_clearance 0.04)
+    (solder_mask_min_width 0.1)
     (aux_axis_origin 0 0)
     (visible_elements FFFFF77F)
     (pcbplotparams
@@ -680,8 +681,8 @@ PcbTextThickness=0.300000000000
 ModuleTextSizeV=1.000000000000
 ModuleTextSizeH=1.000000000000
 ModuleTextSizeThickness=0.150000000000
-SolderMaskClearance=0.000000000000
-SolderMaskMinWidth=0.000000000000
+SolderMaskClearance=0.040000000000
+SolderMaskMinWidth=0.100000000000
 DrawSegmentWidth=0.200000000000
 BoardOutlineThickness=0.100000000000
 ModuleOutlineThickness=0.150000000000
@@ -694,8 +695,9 @@ version=1
 version=1
 LibDir=
 [eeschema/libraries]
-LibName1=/Users/swilson/dev/mechkeys/kicad-libs/cherrymx
-LibName2=device
+LibName1=../kicad-libs/device
+LibName2=../kicad-libs/cherrymx
+LibName3=device
 """
 
 component_templates = {

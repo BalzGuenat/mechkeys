@@ -1,4 +1,4 @@
-update=Thursday, August 18, 2016 'PMt' 11:40:01 PM
+update=Friday, January 13, 2017 'AMt' 10:09:38 AM
 version=1
 last_client=kicad
 [pcbnew]
@@ -29,11 +29,12 @@ version=1
 version=1
 LibDir=../kicad-libs;/Users/swilson/dev/mechkeys/kicad-libs
 [eeschema/libraries]
-LibName1=74xx
-LibName2=cherrymx
-LibName3=device
-LibName4=power
-LibName5=teensy_3.1
-LibName6=atmel
-LibName7=conn
-LibName8=contrib_symbols_dl1eic/Symbols_EN60617_13Mar2013
+LibName1=LFK78-rescue
+LibName2=74xx
+LibName3=cherrymx
+LibName4=device
+LibName5=power
+LibName6=teensy_3.1
+LibName7=atmel
+LibName8=conn
+LibName9=contrib_symbols_dl1eic/Symbols_EN60617_13Mar2013

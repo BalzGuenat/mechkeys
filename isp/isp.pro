@@ -1,4 +1,4 @@
-update=Sunday, January 01, 2017 'AMt' 10:54:47 AM
+update=Thursday, January 05, 2017 'PMt' 07:11:43 PM
 version=1
 last_client=kicad
 [pcbnew]
@@ -59,3 +59,4 @@ LibName27=opto
 LibName28=atmel
 LibName29=contrib
 LibName30=valves
+LibName31=Zilog

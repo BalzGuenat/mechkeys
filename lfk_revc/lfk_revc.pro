@@ -1,4 +1,4 @@
-update=Saturday, November 26, 2016 'PMt' 06:27:58 PM
+update=Friday, January 13, 2017 'AMt' 10:09:10 AM
 version=1
 last_client=kicad
 [pcbnew]
@@ -39,7 +39,8 @@ LabSize=60
 version=1
 LibDir=
 [eeschema/libraries]
-LibName1=/Users/swilson/dev/mechkeys/kicad-libs/cherrymx
-LibName2=device
-LibName3=power
-LibName4=conn
+LibName1=lfk_revc-rescue
+LibName2=/Users/swilson/dev/mechkeys/kicad-libs/cherrymx
+LibName3=device
+LibName4=power
+LibName5=conn
