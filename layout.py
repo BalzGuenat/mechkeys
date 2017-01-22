@@ -77,12 +77,12 @@ y_origin = 1.5
 #     diode_x_offset = 3 * 2.54
 #     diode_y_offset = 8.1
 
-diode_template = "diode_smd"
-# diode_template = "diode_smd"  # 'diode_smd' or 'diode_th'
+diode_template = "diode_MiniMELF"
+# diode_template = "diode_SOD-123"  # 'diode_MiniMELF' 'diode_SOD-123' or 'diode_DO-35'
 
 diode_rotate = 90
-diode_x_offset = -5
-diode_y_offset = 5.1
+diode_x_offset = -2 * 2.54
+diode_y_offset = 2 * 2.54
 
 diode_label_rotate = 90
 diode_label_x_offset = 0
@@ -588,7 +588,7 @@ footprints = {
     (pad SW1 thru_hole oval (at -3.405 -3.27 330.95) (size 2.5 4.17) (drill oval 1.5 3.17) (layers *.Cu *.Mask F.SilkS))
     (pad SW2 thru_hole oval (at 2.52 -4.79 356.1) (size 2.5 3.08) (drill oval 1.5 2.08) (layers *.Cu *.Mask F.SilkS))
   )""",
-    "diode_smd": """(module Diodes_SMD:SOD-123 (layer B.Cu) (tedit 5530FCB9) (tstamp 57436F4A)
+    "diode_SOD-123": """(module Diodes_SMD:SOD-123 (layer B.Cu) (tedit 5530FCB9) (tstamp 57436F4A)
     (at {x_pos} {y_pos} {rotate})
     (descr SOD-123)
     (tags SOD-123)
@@ -616,7 +616,7 @@ footprints = {
   )
 
     """,
-    "diode_th": """(module Diode_DO-35_SOD27_Horizontal_RM10 locked (layer F.Cu) (tedit {tedit}) (tstamp {tstamp})
+    "diode_DO-35": """(module Diode_DO-35_SOD27_Horizontal_RM10 locked (layer F.Cu) (tedit {tedit}) (tstamp {tstamp})
     (at {x_pos} {y_pos} {rotate})
     (descr "Diode, DO-35,  SOD27, Horizontal, RM 10mm")
     (tags "Diode, DO-35, SOD27, Horizontal, RM 10mm, 1N4148,")
@@ -643,6 +643,34 @@ footprints = {
       (rotate (xyz 0 0 180))
     )
   )""",
+    "diode_MiniMELF": """(module Diodes_SMD:MiniMELF_Standard (layer B.Cu) (tedit {tedit}) (tstamp {tstamp})
+    (at {x_pos} {y_pos} {rotate})
+    (descr "Diode Mini-MELF Standard")
+    (tags "Diode Mini-MELF Standard")
+    (attr smd)
+    (fp_text reference {reference} (at {label_x_pos} {label_y_pos} {label_rotate}) (layer B.SilkS)
+      (effects (font (size 1 1) (thickness 0.15)))
+    )
+    (fp_text value {reference} (at {label_x_pos} {label_y_pos} {label_rotate}) (layer B.Fab) hide
+      (effects (font (size 1 1) (thickness 0.15)))
+    )
+    (fp_line (start -2.55 1) (end 2.55 1) (layer B.CrtYd) (width 0.05))
+    (fp_line (start 2.55 1) (end 2.55 -1) (layer B.CrtYd) (width 0.05))
+    (fp_line (start 2.55 -1) (end -2.55 -1) (layer B.CrtYd) (width 0.05))
+    (fp_line (start -2.55 -1) (end -2.55 1) (layer B.CrtYd) (width 0.05))
+    (fp_line (start -0.40024 -0.0508) (end 0.60052 0.85) (layer B.SilkS) (width 0.15))
+    (fp_line (start 0.60052 0.85) (end 0.60052 -0.85) (layer B.SilkS) (width 0.15))
+    (fp_line (start 0.60052 -0.85) (end -0.40024 0) (layer B.SilkS) (width 0.15))
+    (fp_line (start -0.40024 0.85) (end -0.40024 -0.85) (layer B.SilkS) (width 0.15))
+    (pad 1 smd rect (at -1.75006 0 90) (size 1.30048 1.69926) (layers B.Cu B.Paste B.Mask))
+    (pad 2 smd rect (at 1.75006 0 90) (size 1.30048 1.69926) (layers B.Cu B.Paste B.Mask))
+    (model Diodes_SMD.3dshapes/MiniMELF_Standard.wrl
+      (at (xyz 0 0 0))
+      (scale (xyz 0.3937 0.3937 0.3937))
+      (rotate (xyz 0 0 0))
+    )
+  )
+  """,
 }
 
 schem_template_header = """EESchema Schematic File Version 2
@@ -800,23 +828,24 @@ def main():
         os.mkdir(output_directory)
     if os.path.exists(project_file_name):
         print "Project exists, destroy it (y/n)?"
-        if raw_input().lower() != "y":
-            return
+        if raw_input().lower() == "y":
+            with open(project_file_name, mode="w") as project_file:
+                project_file.write(project_template)
     if os.path.exists(schematic_file_name):
         print "Schematic exists, destroy it (y/n)?"
-        if raw_input().lower() != "y":
-            return
+        if raw_input().lower() == "y":
+            switch_sch = codecs.open(schematic_file_name, mode="w", encoding='utf-8')
+        else:
+            switch_sch = open(os.devnull, "w")
     if os.path.exists(pcb_file_name):
         print "PCB exists, destroy it (y/n)?"
-        if raw_input().lower() != "y":
-            return
-    with open(project_file_name, mode="w") as project_file:
-        project_file.write(project_template)
+        if raw_input().lower() == "y":
+            pcb_txt = codecs.open(pcb_file_name, mode="w", encoding='utf-8')
+        else:
+            pcb_txt = open(os.devnull, "w")
     with open(layout_file_name) as layout_file:
         layout = json.load(layout_file)
-    switch_sch = codecs.open(schematic_file_name, mode="w", encoding='utf-8')
     switch_sch.write(schem_template_header)
-    pcb_txt = codecs.open(pcb_file_name, mode="w", encoding='utf-8')
     pcb_txt.write(pcb_header)
     x, y = x_origin, y_origin
     i = 1
@@ -850,6 +879,7 @@ def main():
     switch_sch.close()
     pcb_txt.write(pcb_footer)
     pcb_txt.close()
+
 
 if __name__ == "__main__":
     main()
