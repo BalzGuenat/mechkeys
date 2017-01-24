@@ -831,18 +831,18 @@ def main():
         if raw_input().lower() == "y":
             with open(project_file_name, mode="w") as project_file:
                 project_file.write(project_template)
-    if os.path.exists(schematic_file_name):
+    sch_name = schematic_file_name
+    if os.path.exists(sch_name):
         print "Schematic exists, destroy it (y/n)?"
-        if raw_input().lower() == "y":
-            switch_sch = codecs.open(schematic_file_name, mode="w", encoding='utf-8')
-        else:
-            switch_sch = open(os.devnull, "w")
-    if os.path.exists(pcb_file_name):
+        if raw_input().lower() == "n":
+            sch_name = os.devnull
+    switch_sch = codecs.open(sch_name, mode="w", encoding='utf-8')
+    pcb_name = pcb_file_name
+    if os.path.exists(pcb_name):
         print "PCB exists, destroy it (y/n)?"
-        if raw_input().lower() == "y":
-            pcb_txt = codecs.open(pcb_file_name, mode="w", encoding='utf-8')
-        else:
-            pcb_txt = open(os.devnull, "w")
+        if raw_input().lower() == "n":
+            pcb_name = os.devnull
+    pcb_txt = codecs.open(pcb_name, mode="w", encoding='utf-8')
     with open(layout_file_name) as layout_file:
         layout = json.load(layout_file)
     switch_sch.write(schem_template_header)
