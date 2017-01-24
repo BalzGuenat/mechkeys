@@ -831,6 +831,9 @@ def main():
         if raw_input().lower() == "y":
             with open(project_file_name, mode="w") as project_file:
                 project_file.write(project_template)
+    else:
+        with open(project_file_name, mode="w") as project_file:
+            project_file.write(project_template)
     sch_name = schematic_file_name
     if os.path.exists(sch_name):
         print "Schematic exists, destroy it (y/n)?"
