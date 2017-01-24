@@ -39,16 +39,16 @@ layout_file_name = "EL87.json"
 project_name = "EL87"
 
 # output directory
-output_directory = project_name + "/"
+output_directory = os.path.join(os.getcwd(), project_name)
 
 # project file
-project_file_name = output_directory + project_name + ".pro"
+project_file_name = os.path.join(output_directory, project_name + ".pro")
 
 # schematic file
-schematic_file_name = output_directory + project_name + ".sch"
+schematic_file_name = os.path.join(output_directory, project_name + ".sch")
 
 # pcb file
-pcb_file_name = output_directory + project_name + ".kicad_pcb"
+pcb_file_name = os.path.join(output_directory, project_name + ".kicad_pcb")
 
 # PCB - Basics
 pcb_spacing = 19.05  # 19.05mm aka .75"
@@ -849,7 +849,7 @@ def main():
     pcb_txt.write(pcb_header)
     x, y = x_origin, y_origin
     i = 1
-    timestamp = time()
+    timestamp = int(time())
     for row in layout:
         if not isinstance(row, list):
             continue
